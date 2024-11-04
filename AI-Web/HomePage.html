@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="HomePage.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <title>Echo</title>
+</head>
+<body>
+<section id="Page1">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#Page1"><div class="icon-wrapper icon1"><p class="temp1">.</p><img src="images/home.png" class="icon home"></div></a>
+            <a href="#Page2"><div class="icon-wrapper icon2"><p class="temp2">.</p><img src="images/chat.png" class="icon chat"></div></a>
+            <a href="#Page3"><div class="icon-wrapper icon3"><p class="temp3">.</p><img src="images/teach.png" class="icon teach"></div></a>
+        </div>
+        <div class="logo-menu-wrapper">
+            <div class="logo"><img src="images/logo.png"></div>
+            <div class="menu"><img src="images/menu-button.png"></div>
+        </div>
+    </nav>
+
+     <div class="Contributers">
+        <div class="green-dot">.</div>
+        <p style="color: white;font-size: 13px;">Live Contributers Tracker</p>
+    </div>
+    
+    <div class="client-cards">
+
+        <div class="card">
+            <div class="user-profile">
+                <img src="images/user-pfp1.png" class="user-pfp">
+                <h1 style="color: white;">User1</h1>
+            </div>
+            <div class="card-details">
+            <div style="margin-left: 20px;"><span style="color: white;margin-right: 3px;">928</span><span style="color: #2e2e2e;">FILES</span></div>
+            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">1</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>+11.1%</p><img src="images/trend-up.png" class="indicator" ></div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="user-profile">
+                <img src="images/user-pfp2.png" class="user-pfp">
+                <h1 style="color: white;">User2</h1>
+            </div>
+            <div class="card-details">
+            <div style="margin-left: 20px;"><span style="color: white;margin-right: 3px;">623</span><span style="color: #2e2e2e;">FILES</span></div>
+            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">3</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>-3%</p><img src="images/trend-down.png" class="indicator" ></div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="info-slider-wrapper">
+        <div class="info-slider">
+            <div class="info-text"><p style="z-index: 100;font-size: 12px;color: rgba(255, 255, 255, 0.795);font-weight: 300;">Try our new ai chat bot that has the ability to generate 1000 w/s</p></div>
+        </div>
+    </div>
+     
+    <div class="Hero-Part">
+        <div class="Hero-Pic-wrapper"><img src="images/Hero-Pic.png" class="Hero-Picture"><span style="font-size: 40px;font-weight: 300;color: white;">Echo AI Voice Trainer</span></div>
+        <div class="Hero-Text">AI  Chat Bot</div>
+    </div>
+
+    <div class="colors-wrapper">
+        <div class="purple"></div>
+        <img src="images/Visualizer.jpg" class="Visualizer">
+        <div class="blue"></div>
+    </div>
+    <div class="upload"><p style="font-size: 10px;color: white;margin-top: 80px;">Drop 'n' down</p><img src="images/download1.png" class="download-icon"></div>
+    <div class="download"><p style="font-size: 10px;color: white;margin-top: 80px;">Download</p><img src="images/download2.png" class="download-icon"></div>
+    <div class="Service-text"><p style="color: white;">How can I help you ?</p></div>
+     
+    <a href="#Page2"><div class="scrolldown" style="--color: #a11d80b9">
+        <div class="chevrons">
+            <div class="chevrondown"></div>
+            <div class="chevrondown"></div>
+        </div>
+    </div></a>
+    
+</section>
+<section id="Page2">
+
+   <div class="Chatbot-Card">
+     <nav>
+        <div class="pfp"><img src="images/logo.png" class="pfp1"></div>
+        <p>Echo</p>
+    </nav>
+     <div class="Chat"></div>
+
+    <div class="Chat-input">
+        <div class="messageBox">
+        <div class="fileUploadWrapper">
+          <label for="file">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
+              <circle
+                stroke-width="20"
+                stroke="#6c6c6c"
+                fill="none"
+                r="158.5"
+                cy="168.5"
+                cx="168.5"
+              ></circle>
+              <path
+                stroke-linecap="round"
+                stroke-width="25"
+                stroke="#6c6c6c"
+                d="M167.759 79V259"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-width="25"
+                stroke="#6c6c6c"
+                d="M79 167.138H259"
+              ></path>
+            </svg>
+            <span class="tooltip">Add an image</span>
+          </label>
+          <input type="file" id="file" name="file" />
+        </div>
+        <input required="" placeholder="Message..." type="text" id="messageInput" />
+        <button id="sendButton">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
+            <path
+              fill="none"
+              d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+            ></path>
+            <path
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              stroke-width="33.67"
+              stroke="#6c6c6c"
+              d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      </div>
+      <div class="mic-button"><img src="images/microphone.png" class="mic-icon"></div>
+   </div>
+   <div class="Main-Text"><p style="font-size: 50px;font-weight: 500;color: white;">Try it yourself</p></div>
+</section>
+<section id="Page3">
+   <div class="Feedback-text"><p style="font-size: 40px;font-weight: 500;color: white;">Your Opinion is important</p></div>
+   <div class="Feedback-Card">
+    <div class="form__group field">
+    <input type="input" class="form__field" placeholder="Name" required="">
+    <label for="name" class="form__label">E-Mail</label>
+   </div>
+
+   <div class="form">
+    <input class="input" placeholder="Type your text" required="" type="text">
+    <span class="input-border"></span>
+  </div>
+  <div class="button-container">
+    <span class="text">
+      <span class="button-lines">
+        <span class="button-line-1"></span>
+        <span class="button-line-2"></span>
+      </span>
+    </span>
+  </div>
+   </div>
+
+</section>
+</body>
+</html>
