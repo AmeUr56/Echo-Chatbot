@@ -11,12 +11,12 @@
 </head>
 <body>
    <div class="menu-bar">
-    <div style="display: flex;align-items: center;"><a href="HomePage.html"><img src="../static/img/logo.png" class="logo"></a><div class="popup-msg"><p style="font-size: 10px;text-align: center;margin-top: 5px;">ECHO</p></div></div>
+    <div style="display: flex;align-items: center;"><a href="{{ url_for('index') }}"><img src="static/img/logo.png" class="logo"></a><div class="popup-msg"><p style="font-size: 10px;text-align: center;margin-top: 5px;">ECHO</p></div></div>
     <ul>
-      <a href="../templates/HomePage.html"><li><img src="../static/img/home.png" class="Menu-icon"><p>Home</p></li></a>
-      <a href="../templates/HomePage.html"><li><img src="../static/img/chat.png" class="Menu-icon"><p>Chat</p></li></a>
-      <a href=""><li><img src="../static/img/data.png" class="Menu-icon"><p>Data</p></li></a>
-      <a href=""><li><img src="../static/img/support.png" class="Menu-icon"><p>Contact</p></li></a>
+      <a href="{{ url_for('index') }}#Page1"><li><img src="static/img/home.png" class="Menu-icon"><p>Home</p></li></a>
+      <a href="{{ url_for('index') }}#Page2"><li><img src="static/img/chat.png" class="Menu-icon"><p>Chat</p></li></a>
+      <a href=""><li><img src="static/img/data.png" class="Menu-icon"><p>Data</p></li></a>
+      <a href=""><li><img src="static/img/support.png" class="Menu-icon"><p>Contact</p></li></a>
     </ul>
   </div>
   <div class="Main">
@@ -25,7 +25,7 @@
     </div>
     <div class="Profile-card">
       <div class="pfp"></div>
-      <div class="modify"><img src="../static/img/modify.png" class="icon"></div>
+      <div class="modify"><img src="static/img/modify.png" class="icon"></div>
       <p></p>
 
     <button id="editProfileBtn">Edit Profile</button>

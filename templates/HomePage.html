@@ -29,10 +29,10 @@
       <div id="menuBar" class="menu-bar">
        
           <ul>
-              <li><img src="static/img/user.png" class="Menu-icon"><a href="Profile.html">Profile</a></li>
-              <li><img src="static/img/database.png" class="Menu-icon"><a href="#">Data</a></li>
-              <li><img src="static/img/customer-service.png" class="Menu-icon"><a href="#">Contact</a></li>
-              <li>+   <a href="#">Login/Register</a></li>
+              <li><img src="static/img/user.png" class="Menu-icon"><a href="{{ url_for('profile') }}">Profile</a></li>
+              <li><img src="static/img/database.png" class="Menu-icon"><a href="">Data</a></li>
+              <li><img src="static/img/customer-service.png" class="Menu-icon"><a href="">Contact</a></li>
+              <li>+   <a href="{{ url_for('login') }}">Login/Register</a></li>
           </ul>
           <button class="Btn">
   
@@ -140,7 +140,6 @@
 <section id="Page3">
    <div class="Feedback-text"><p style="font-size: 40px;font-weight: 500;color: white;">Your Opinion is important</p></div>
    <div class="Feedback-Card">
-
    <div class="form">
     <input class="input" placeholder="Type your text" required="" type="text">
     <span class="input-border"></span>
