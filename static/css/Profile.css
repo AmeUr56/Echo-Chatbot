@@ -1,0 +1,217 @@
+*{
+  padding: 0;
+  margin: 0;
+  transition: .5s;
+  font-family:"Poppins", serif;
+  scroll-behavior: smooth;
+}
+body{
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  background: #0e0e0e;
+}
+.menu-bar{
+  height: 100%;
+  width: 300px;
+  background: #33172f;
+  border-radius: 0 0 10px 0;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  background: linear-gradient(#0e0e0e,#33172f,#33172f);
+}
+.Menu-icon{
+  height: 20px;
+  width: 20px;
+  margin-right: 20px;
+}
+.logo{
+  height: 100px;
+  width: 140px;
+}
+.logo:hover{
+  transform: scale(1.2);
+}
+.popup-msg {
+  position: relative;
+  height: 25px;
+  width: 50px;
+  margin-left: -30px;
+  margin-top: -10px;
+  background: black;
+  border: 1px solid grey;
+  border-radius: 10px;
+  color: white;
+}
+
+ul{
+  margin-top: 100px;
+}
+ul li{
+  height: 50px;
+  width: 93%;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+ul li:hover{
+  background: #fff;
+}
+ul a{
+  text-decoration: none;
+  color: black;
+}
+.Main{
+  height: 100%;
+  width: calc(100% - 290px);
+}
+.Profile-card{
+  margin-top: 70px;
+  margin-left: 400px;
+  display: flex;
+  flex-direction: column;
+}
+.pfp{
+  height: 100px;
+  width: 100px;
+  border-radius: 100%;
+  background: white;
+  margin-left: 95px;
+  margin-bottom: 50px;
+}
+.modify{
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  background: linear-gradient(to top,#303030,white);
+  top: 35%;
+  right: 33%;
+}
+.icon{
+  height: 20px;
+  width: 20px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+.Section-Indicator{
+  display: flex;
+  align-items: center;
+  margin-top: 50px;
+}
+.Section-Indicator::before{
+  content: '';
+  height: 2px;
+  width: 200px;
+  background: white;
+}
+button {
+  appearance: none;
+  background-color: transparent;
+  border: 0.125em solid #1A1A1A;
+  border-radius: 0.9375em;
+  box-sizing: border-box;
+  width: 300px;
+  color: #3B3B3B;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  min-height: 3.75em;
+  min-width: 0;
+  outline: none;
+  padding: 1em 2.3em;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
+ }
+ 
+ button:disabled {
+  pointer-events: none;
+ }
+ 
+ button:hover {
+  color: #fff;
+  background-color: #1A1A1A;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+ }
+ 
+ button:active {
+  box-shadow: none;
+  transform: translateY(0);
+ }
+ .modal {
+  display: none; 
+  position: fixed;
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0); 
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+}
+
+.modal-content {
+  background: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin: 10px 0 5px;
+}
+
+input, textarea {
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button[type="submit"] {
+  background-color: #33172f;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #33172f;
+}
