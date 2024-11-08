@@ -1,11 +1,22 @@
 *{
     padding: 0;
     margin: 0;
+    transition: .5s;
 }
 body{
     height: 92.8vh;
     width: 100%;
-    background: linear-gradient(to bottom,#fff,#000);
+    background: linear-gradient(to bottom,#311747,#000);
+}
+.icon{
+  position: absolute;
+  height: 100px;
+  width: 130px;
+  top: 0;
+  left: 0;
+}
+.icon:hover{
+  transform: scale(1.2);
 }
 .SignIn{
     position: absolute;
@@ -140,4 +151,128 @@ body{
     ;
   }
   
-      
+@media (max-width:1303px) {
+  .form {
+
+    margin-top: 50px;
+    margin-left: 500px;
+  }
+}    
+@media (max-width:1014px) {
+  .form {
+    margin-top: 50px;
+    margin-left: 300px;
+  }
+} 
+@media (max-width:812px) {
+  .form {
+    margin-top: 80px;
+    margin-left: 250px;
+    gap: 10px;    
+    width: 350px;
+  }
+  
+} 
+
+@media (max-width:650px) {
+  .form {
+    margin-top: 80px;
+    margin-left: 150px;
+    gap: 10px;    
+    width: 350px;
+  }
+  .SignIn{
+    top: 50%;
+    left: 30px;
+    font-size: 20px;
+}
+.SignIn::before{
+  content: '';
+  position: absolute;
+  background: black;
+  height: 2px;
+  width: 100px;
+  top: 30px;
+}
+} 
+
+@media (max-width:563px) {
+  .form {
+    margin-top: 80px;
+    margin-left: 70px;
+    gap: 10px;    
+    width: 350px;
+  }
+  .SignIn{
+    top: 5%;
+    left: 50%;
+    font-size: 20px;
+}
+.SignIn::before{
+display: none;
+}
+} 
+@media (max-width:485px) {
+  .form {
+    margin-top: 100px;
+    margin-left: 100px;
+    gap: 3px;    
+    width: 250px;
+  }
+  .SignIn{
+    top: 5%;
+    left: 50%;
+    font-size: 20px;
+}
+.SignIn::before{
+display: none;
+}
+} 
+@media (max-width:414px) {
+  .form {
+    margin-top: 100px;
+    margin-left: 50px;
+    gap: 3px;    
+    width: 250px;
+  }
+  .SignIn{
+    top: 5%;
+    left: 50%;
+    font-size: 20px;
+}
+.SignIn::before{
+display: none;
+}
+} 
+@media (max-width:364px) {
+  .form {
+    margin-top: 100px;
+    margin-left: 27px;
+    gap: 3px;    
+    width: 250px;
+  }
+  .SignIn{
+    top: 5%;
+    left: 50%;
+    font-size: 20px;
+}
+.SignIn::before{
+display: none;
+}
+} 
+@media (max-width:343px) {
+  .form {
+    margin-top: 100px;
+    margin-left: 45px;
+    gap: 3px;    
+    width: 200px;
+  }
+  .SignIn{
+    top: 5%;
+    left: 50%;
+    font-size: 20px;
+}
+.SignIn::before{
+display: none;
+}
+} 

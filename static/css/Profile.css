@@ -64,37 +64,10 @@ ul a{
 .Main{
   height: 100%;
   width: calc(100% - 290px);
-}
-.Profile-card{
-  margin-top: 70px;
-  margin-left: 400px;
   display: flex;
-  flex-direction: column;
-}
-.pfp{
-  height: 100px;
-  width: 100px;
-  border-radius: 100%;
-  background: white;
-  margin-left: 95px;
-  margin-bottom: 50px;
-}
-.modify{
-  position: absolute;
-  height: 30px;
-  width: 30px;
-  border-radius: 100%;
-  background: linear-gradient(to top,#303030,white);
-  top: 35%;
-  right: 33%;
-}
-.icon{
-  height: 20px;
-  width: 20px;
-  margin-top: 5px;
-  margin-left: 5px;
 }
 .Section-Indicator{
+  position: absolute;
   display: flex;
   align-items: center;
   margin-top: 50px;
@@ -105,6 +78,50 @@ ul a{
   width: 200px;
   background: white;
 }
+.Data-stats{
+  position: relative;
+  height: 580px;
+  width: 500px;
+  margin-top: 100px;
+  margin-left: 20px;
+  border-radius: 20px;
+  border: solid 2px #3B3B3B;
+}
+.Profile-card{
+  align-items: center;
+  height: 250px;
+  width: 350px;
+  margin-top: 100px;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  border: solid 2px #3B3B3B;
+}
+.pfp{
+  height: 100px;
+  width: 100px;
+  border-radius: 100%;
+  background: white;
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+.modify{
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  background: linear-gradient(to top,#303030,white);
+  margin-top: 100px;
+  margin-left: 40px;
+}
+.icon{
+  height: 20px;
+  width: 20px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
 button {
   appearance: none;
   background-color: transparent;
@@ -214,4 +231,185 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background-color: #33172f;
+}
+
+@media (max-width:1440px){
+  .menu-bar{
+    height: 104%;
+  }
+  .Data-stats{
+    height: 570px;
+  }
+}
+@media (max-width:1225px){
+  .Data-stats{
+      height: 400px;
+      width: 320px;
+      margin-top: 100px;
+      margin-left: 20px;
+  }
+  .Profile-card{
+    height: 180px;
+    width: 200px;
+    margin-top: 100px;
+    margin-left: 50px;
+  }
+  .pfp{
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+    background: white;
+    margin-bottom: 50px;
+    margin-top: 20px;
+  }
+  button {
+    width: 170px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: -15px;
+  }
+
+  .modify{
+    height: 30px;
+    width: 30px;
+    margin-top: 50px;
+    margin-left: 40px;
+  }
+
+}
+
+@media (max-width:890px){
+  .Data-stats{
+    height: 400px;
+    width: 220px;
+    margin-top: 100px;
+    margin-left: 20px;
+}
+.Profile-card{
+  height: 180px;
+  width: 150px;
+  margin-top: 100px;
+  margin-left: 50px;
+}
+.pfp{
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  background: white;
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+button {
+  width: 130px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.modify{
+  height: 30px;
+  width: 30px;
+  margin-top: 50px;
+  margin-left: 40px;
+}
+}
+
+@media (max-width:742px){
+  .menu-bar{
+    height: 100vh;
+    width: 80px;
+  }
+  .popup-msg{
+    display: none;
+  }
+  .logo{
+    height: 80px;
+    width: 100px;
+    margin-left: -10px;
+  }
+  ul p{
+    display: none;
+  }
+  .Main{
+    flex-direction: column;
+  }
+  body{
+    height: fit-content;
+  }
+  .Data-stats{
+    height: 300px;
+    width: 300px;
+    margin-top: 100px;
+    margin-left: 20px;
+}
+.Profile-card{
+  height: 200px;
+  width: 300px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.pfp{
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  background: white;
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+button {
+  width: 130px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.modify{
+  height: 30px;
+  width: 30px;
+  margin-top: 50px;
+  margin-left: 40px;
+}
+}
+
+@media (max-width:405px){
+  .Data-stats{
+    height: 300px;
+    width: 200px;
+    margin-top: 100px;
+    margin-left: 20px;
+}
+.menu-bar{
+  height: 100vh;
+  width: 70px;
+}
+.Profile-card{
+  height: 200px;
+  width: 200px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.pfp{
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  background: white;
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+button {
+  width: 130px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.modify{
+  height: 30px;
+  width: 30px;
+  margin-top: 50px;
+  margin-left: 40px;
+}
+.Section-Indicator::before{
+  content: '';
+  height: 2px;
+  width: 100px;
+  background: white;
+}
 }

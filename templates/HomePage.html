@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/css/HomePage.css">
+    <link rel="stylesheet" href="../static/css/HomePage.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -12,27 +12,23 @@
 <body>
 <section id="Page1">
     <nav>
-        <div class="nav-wrapper">
-            <a href="#Page1"><div class="icon-wrapper icon1"><p class="temp1">.</p><img src="static/img/home.png" class="icon home"></div></a>
-            <a href="#Page2"><div class="icon-wrapper icon2"><p class="temp2">.</p><img src="static/img/chat.png" class="icon chat"></div></a>
-            <a href="#Page3"><div class="icon-wrapper icon3"><p class="temp3">.</p><img src="static/img/teach.png" class="icon teach"></div></a>
-        </div>
+
         <div class="logo-menu-wrapper">
           <div class="logo">
-              <img src="static/img/logo.png" alt="Logo">
+              <img src="../static/img/logo.png" alt="Logo">
           </div>
           <div class="menu" id="menuButton">
-              <img src="static/img/menu-button.png" alt="Menu">
+              <img src="../static/img/menu-button.png" alt="Menu">
           </div>
       </div>
   
       <div id="menuBar" class="menu-bar">
        
           <ul>
-              <li><img src="static/img/user.png" class="Menu-icon"><a href="{{ url_for('profile') }}">Profile</a></li>
-              <li><img src="static/img/database.png" class="Menu-icon"><a href="">Data</a></li>
-              <li><img src="static/img/customer-service.png" class="Menu-icon"><a href="">Contact</a></li>
-              <li>+   <a href="{{ url_for('login') }}">Login/Register</a></li>
+              <img src="../static/img/close.png" id="close">
+              <a href="Profile.html"><li><img src="../static/img/user.png" class="Menu-icon">Profile</li></a>
+              <a href="#Page3"><li id="Contact"><img src="../static/img/customer-service.png" class="Menu-icon">Contact</li></a>
+              <a href="Login.html"><li>+   Login/Register</li></a>
           </ul>
           <button class="Btn">
   
@@ -42,7 +38,7 @@
           </button>
       </div>
 
-      <script src="static/js/script.js"></script>
+      <script src="../static/js/script.js"></script>
     </nav>
 
      <div class="Contributers">
@@ -54,27 +50,33 @@
 
         <div class="card">
             <div class="user-profile">
-                <img src="static/img/user-pfp1.png" class="user-pfp">
+                <img src="../static/img/user-pfp1.png" class="user-pfp">
                 <h1 style="color: white;">User1</h1>
             </div>
             <div class="card-details">
             <div style="margin-left: 20px;"><span style="color: white;margin-right: 3px;">928</span><span style="color: #2e2e2e;">FILES</span></div>
-            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">1</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>+11.1%</p><img src="static/img/trend-up.png" class="indicator" ></div></div>
+            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">1</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>+11.1%</p><img src="../static/img/trend-up.png" class="indicator" ></div></div>
             </div>
         </div>
 
-        <div class="card">
+        <div class="card card2">
             <div class="user-profile">
-                <img src="static/img/user-pfp1.png" class="user-pfp">
+                <img src="../static/img/user-pfp1.png" class="user-pfp">
                 <h1 style="color: white;">User2</h1>
             </div>
             <div class="card-details">
             <div style="margin-left: 20px;"><span style="color: white;margin-right: 3px;">623</span><span style="color: #2e2e2e;">FILES</span></div>
-            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">3</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>-3%</p><img src="static/img/trend-down.png" class="indicator" ></div></div>
+            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">3</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>-3%</p><img src="../static/img/trend-down.png" class="indicator" ></div></div>
             </div>
         </div>
 
-    </div>
+    </div> 
+    <div class="Center-elements-wrapper">
+        <div class="nav-wrapper">
+            <a href="#Page1"><div class="icon-wrapper icon1"><img src="../static/img/home.png" class="icon home"></div></a>
+            <a href="#Page2"><div class="icon-wrapper icon2"><img src="../static/img/chat.png" class="icon chat"></div></a>
+            <a href="#Page3"><div class="icon-wrapper icon3"><img src="../static/img/teach.png" class="icon teach"></div></a>
+        </div>
 
     <div class="info-slider-wrapper">
         <div class="info-slider">
@@ -83,32 +85,32 @@
     </div>
      
     <div class="Hero-Part">
-        <div class="Hero-Pic-wrapper"><img src="static/img/Hero-Pic.png" class="Hero-Picture"><span style="font-size: 40px;font-weight: 300;color: white;">Echo</span></div>
+        <div class="Hero-Pic-wrapper"><img src="../static/img/Hero-Pic.png" class="Hero-Picture"><span style="font-size: 40px;font-weight: 300;color: white;">Echo</span></div>
         <div class="Hero-Text">AI  Chat Bot</div>
     </div>
 
-    <div class="colors-wrapper">
-        <div class="purple"></div>
-        <img src="static/img/Visualizer.jpg" class="Visualizer">
-        <div class="blue"></div>
-    </div>
-    <div class="upload"><p style="font-size: 10px;color: white;margin-top: 80px;">Drop 'n' down</p><img src="static/img/download1.png" class="download-icon"></div>
-    <div class="download"><p style="font-size: 10px;color: white;margin-top: 80px;">Download</p><img src="static/img/download2.png" class="download-icon"></div>
-    <div class="Service-text"><p style="color: white;">How can I help you ?</p></div>
+
+    <div class="Service-text"><p style="color: white;margin-top: 170px;">How can I help you ?</p></div>
      
-    <a href="#Page2"><div class="scrolldown" style="--color: #a11d80b9">
+    <a href="#Page2">
+    <div class="scrolldown" style="--color: #a11d80b9">
         <div class="chevrons">
             <div class="chevrondown"></div>
             <div class="chevrondown"></div>
         </div>
     </div></a>
-    
+</div>
+    <div class="colors-wrapper">
+        <div class="purple"></div>
+        <img src="../static/img/Visualizer.jpg" class="Visualizer">
+        <div class="blue"></div>
+    </div>
 </section>
 <section id="Page2">
 
    <div class="Chatbot-Card">
      <nav>
-        <div class="pfp"><img src="static/img/logo.png" class="pfp1"></div>
+        <div class="pfp"><img src="../static/img/logo.png" class="pfp1"></div>
         <p>Echo</p>
     </nav>
      <div class="Chat"></div>
@@ -133,13 +135,14 @@
         </button>
       </div>
       </div>
-      <div class="mic-button"><img src="static/img/microphone.png" class="mic-icon"></div>
+      <div class="mic-button"><img src="../static/img/microphone.png" class="mic-icon"></div>
    </div>
-   <div class="Main-Text"><p style="font-size: 50px;font-weight: 500;color: white;">Try it yourself</p></div>
+   <div class="Main-Text"><p class="Page2-text">Try it yourself</p></div>
 </section>
 <section id="Page3">
-   <div class="Feedback-text"><p style="font-size: 40px;font-weight: 500;color: white;">Your Opinion is important</p></div>
+   <div class="Feedback-text"><p class="Page3-text">Your Opinion is important</p></div>
    <div class="Feedback-Card">
+
    <div class="form">
     <input class="input" placeholder="Type your text" required="" type="text">
     <span class="input-border"></span>

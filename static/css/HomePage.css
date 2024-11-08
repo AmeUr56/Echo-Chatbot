@@ -13,17 +13,25 @@ section{
     height: 100vh;
     width: 100%;
 }
+#Page1{
+  background-color: #0e0b0f;
+}
 nav{
     display: flex;
 }
-#Page1{
-    background-color: #0e0b0f;
-    display: flex;
-    flex-direction: column;
+.Center-elements-wrapper{
+  height: 100vh;
+  width: 750px;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-wrap: nowrap;
 }
 .nav-wrapper{
     position:sticky;
-    margin-top: 10px;
+    margin-top: -70px;
     align-items: center;
     height: 50px;
     width: 160px;
@@ -56,50 +64,28 @@ nav{
     background: linear-gradient(#fefdfe,#686868);
     transform: translateY(-10px);
 }
-.icon1:hover .temp1{
-   display: none;
-}
 .icon{
-    display: none;
     position: absolute;
 }
 .home{
     height: 10px;
     width: 10px;
-    margin-left: 18px;
+    margin-left: -6px;
     margin-top: 20px;
 }
 .chat{
     height: 10px;
     width: 10px;
-    margin-left: 18px;
+    margin-left: -6px;
     margin-top: 20px;
 }
 .teach{
     height: 15px;
     width: 15px;
-    margin-left: 15px;
+    margin-left: -6px;
     margin-top: 18px;
 }
-.icon1:hover .home{
-    display: flex;
-}
 
-.icon2:hover .temp2{
-    display: none;
-}
-
-.icon2:hover .chat{
-    display: flex;
-}
-
-.icon3:hover .temp3{
-    display: none;
-}
-
-.icon3:hover .teach{
-    display: flex;
-}
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -159,15 +145,20 @@ body {
   margin-top: 80px;
   margin-left: 20px;
   height: 80%;
-  background: linear-gradient(to top,#33172f,#0e0b0f);
+  background: linear-gradient(to top,#0e0b0f,#0e0b0f,#311747,#33172f,#0e0b0f,#0e0b0f);
   color: white;
   position: fixed;
-  left: -300px; 
+  right: -300px; 
   transition: left 0.3s ease;
   border-radius: 50px;
   box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
-
+#close{
+  position: relative;
+  margin-left: 200px;
+  height: 20px;
+  width: 20px;
+}
 .menu-bar ul {
   list-style-type: none;
   padding: 0;
@@ -200,7 +191,7 @@ body {
 }
 
 .menu-bar.active {
-  left: 0; 
+  right: 0; 
 }
 .Btn {
   display: flex;
@@ -286,14 +277,18 @@ body {
 }
 .client-cards{
     display: flex;
+    flex-direction: column;
 }
 .card{
-    position: relative;
+    position: absolute;
     height: 90px;
     width: 150px;
     border-radius: 5px;
     background: linear-gradient(to left, #241121,#0e0b0f);
     margin-left: 20px;
+}
+.card2{
+  margin-top: 110px;
 }
 .user-profile{
     display: flex;
@@ -330,8 +325,8 @@ body {
 }
 .info-slider-wrapper{
     position: relative;
-    left: 41%;
-    top: -2%;
+    left: 40%;
+    top: 10%;
     height: 20px;
     width: 250px;
     background:linear-gradient(to right,#33172f,#0e0b0f00,#33172f);
@@ -362,6 +357,7 @@ body {
     display: flex;
     flex-direction: column;
     margin-left: 60px;
+    margin-top: 85px;
 }
 .Hero-Pic-wrapper{
     display: flex;
@@ -375,6 +371,7 @@ body {
     margin-right: 20px;
 }
 .Hero-Text{
+
     font-size: 40px;
     font-weight: 300;
     color: white;
@@ -383,6 +380,7 @@ body {
 }
 
 .colors-wrapper{
+    text-align: center;
     position: absolute;
     height: 400px;
     width: 100%;
@@ -449,10 +447,10 @@ body {
   transform: scale(1.02);
 }
 .Service-text{
+   position: relative;
     z-index: 101;
     height: 20px;
     width: fit-content;
-    margin-left: 580px; 
 }
 .Service-text::before{
     content: '';
@@ -460,8 +458,8 @@ body {
     background: linear-gradient(to left,#0e0b0f25,#a11d80,#0e0b0f23);
     height: 1px;
     width: 300px;
-    top: 72%;
-    margin-left: -70px;
+    top: 990%;
+    left: -42%;
 }
 .scrolldown {
     --color: white;
@@ -470,14 +468,13 @@ body {
     position: relative;
     width: var(--sizeX);
     height: var(--sizeY);
-    margin-left: var(sizeX / 2);
     border: calc(var(--sizeX) / 10) solid var(--color);
     border-radius: 50px;
     box-sizing: border-box;
     margin-bottom: 16px;
     cursor: pointer;
-    margin-left: 650px;
-    margin-top: 50px;
+    left: -5%;
+    margin-top: 210px;
   }
   
   .scrolldown::before {
@@ -565,7 +562,7 @@ body {
     right: 2%;
     margin-top: 100px;
     height: 500px;
-    width: 350px;
+    width: 450px;
     border-radius: 10px;
     background-color: #0e0b0f;
     display: flex;
@@ -610,6 +607,7 @@ body {
 .messageBox {
     width: fit-content;
     height: 40px;
+    width: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -622,47 +620,6 @@ body {
   }
   .messageBox:focus-within {
     border: 1px solid rgb(255, 255, 255);
-  }
-  .fileUploadWrapper {
-    width: fit-content;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  
-  #file {
-    display: none;
-  }
-  .fileUploadWrapper label {
-    cursor: pointer;
-    width: fit-content;
-    height: fit-content;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-  .fileUploadWrapper label svg {
-    height: 18px;
-  }
-  .fileUploadWrapper label svg path {
-    transition: all 0.3s;
-  }
-  .fileUploadWrapper label svg circle {
-    transition: all 0.3s;
-  }
-  .fileUploadWrapper label:hover svg path {
-    stroke: #fff;
-  }
-  .fileUploadWrapper label:hover svg circle {
-    stroke: #fff;
-    fill: #3c3c3c;
-  }
-  .fileUploadWrapper label:hover .tooltip {
-    display: block;
-    opacity: 1;
   }
   .tooltip {
     position: absolute;
@@ -697,6 +654,7 @@ body {
   #sendButton {
     width: fit-content;
     height: 100%;
+    margin-left: 125px;
     background-color: transparent;
     outline: none;
     border: none;
@@ -742,6 +700,11 @@ body {
   width: 300px;
   background: white;
 
+}
+.Page2-text{
+  font-size: 50px;
+  font-weight: 500;
+  color: white;
 }
 #Page3{
   background: linear-gradient(to bottom,#311747,#0e0b0f);
@@ -844,4 +807,324 @@ body {
   letter-spacing: 0px;
   transform: skew(-10deg) translateY(8px);
   box-shadow: 0 0 0 var(--😀😀😀);
+}
+.Page3-text{
+  font-size: 40px;
+  font-weight: 500;
+  color: white;
+}
+
+/*Responssivness part*/
+@media (max-width:1440px){
+  section{
+   height: 101vh;
+  }
+  .Hero-Part{
+    margin-left: 120px;
+  }
+  .Visualizer{
+    left: 36%;
+  }
+  .Service-text{
+    margin-left: 640px; 
+  }
+  .scrolldown{
+    margin-left: 700px;
+  }
+}
+@media (max-width:1279px){
+  .Center-elements-wrapper{
+    margin-left: -50px;
+  }
+  .Service-text{
+    margin-left: 620px; 
+  }
+}
+@media (max-width:1275px){
+  .Visualizer{
+    left: 35%;
+  }
+  .scrolldown{
+    margin-left: 680px;
+  }
+  .Page3-text{
+    font-size: 30px;
+  }
+}
+@media (max-width:1179px){
+  .Center-elements-wrapper{
+    margin-left: -80px;
+  }
+  .Page3-text{
+    font-size: 20px;
+  }
+  .Page2-text{
+    font-size: 30px;
+  }
+}
+@media (max-width:1089px){
+  .Center-elements-wrapper{
+    margin-left: -120px;
+  }
+}
+@media (max-width:967px){
+  .Center-elements-wrapper{
+    margin-left: -165px;
+  }
+  .Page3-text{
+    font-size: 15px;
+  }
+  .Page2-text{
+    font-size: 20px;
+  }
+}
+@media (max-width:852px){
+  .Center-elements-wrapper{
+    margin-left: -220px;
+  }
+  .Main-Text{
+    margin-top: -665px;
+  }
+  .Feedback-text{
+    margin-top: -415px
+  }
+  .Page3-text{
+    font-size: 30px;
+  }
+  .Page2-text{
+    font-size: 30px;
+  }
+}
+@media (max-width:750px){
+  .Center-elements-wrapper{
+    margin-left: -275px;
+  }
+  .Visualizer{
+    left: 30%;
+  }
+}
+
+@media (max-width:647px){
+  .Center-elements-wrapper{
+    margin-left: -365px;
+    margin-top: 75px;
+  }
+  .Page3-text{
+    font-size: 20px;
+  }
+  .client-cards{
+    display: none;
+  }
+  .Contributers{
+    display: none;
+  }
+  .nav-wrapper{
+    margin-top: -60px;
+    left: 39.5%;
+  }
+  .Visualizer{
+    left: 20%;
+  }
+  .Chatbot-Card{
+    right: 10%;
+  }
+  .Feedback-Card{
+    left: 110px;
+  }
+}
+@media (max-width:530px){
+  .Center-elements-wrapper{
+    margin-left: -420px;
+    margin-top: 75px;
+  }
+  .Visualizer{
+    left: 13%;
+  }
+  .Chatbot-Card{
+    right: 5%;
+  }
+  .nav-wrapper{
+    margin-top: -60px;
+    left: 36.5%;
+  }
+  .logo-menu-wrapper{
+    flex-direction: column;
+    height: 49px;
+    width: 48px;
+  }
+  .logo{
+    display: none;
+  }
+  .Feedback-Card{
+    left: 60px;
+  }
+  .Feedback-text::after{
+    content: '';
+    height: 2px;
+    width: 200px;
+    background: white;
+  }
+  .Feedback-text{
+    margin-top: -375px
+  }
+  .Visualizer{
+    z-index: 3;
+    position: absolute;
+    height: 350px;
+    width: 300px;
+    left: 20%;
+    top: -20%;
+}
+}
+@media (max-width:471px) {
+  .nav-wrapper{
+    margin-top: -60px;
+    left: 33.5%;
+  }
+  .Center-elements-wrapper{
+    margin-left: -440px;
+    margin-top: 75px;
+  }
+  .Visualizer{
+    z-index: 3;
+    position: absolute;
+    height: 350px;
+    width: 300px;
+    left: 20%;
+    top: -20%;
+}
+.Chatbot-Card{
+  top: 110%;
+  right: 13%;
+  height: 400px;
+  width: 350px;
+}
+.messageBox {
+  height: 40px;
+  width: 250px;
+
+}
+#sendButton {
+  margin-left: 75px;
+}
+.Feedback-Card{
+  height: 400px;
+  width: 300px;
+  left: 90px;
+  top: 1490px;
+}
+.button {
+  width: 184px;
+  height: 48px;
+  margin-top: -100px;
+  margin-left: 60px;
+}
+.Main-Text::before{
+  content: '';
+  height: 2px;
+  width: 200px;
+  background: white;
+
+}
+}
+@media (max-width:415px) {
+  .Center-elements-wrapper{
+    margin-left: -470px;
+    margin-top: 75px;
+  }
+  .nav-wrapper{
+    margin-top: -60px;
+    left: 30.5%;
+  }
+  .Visualizer{
+    z-index: 3;
+    position: absolute;
+    height: 350px;
+    width: 300px;
+    left: 15%;
+    top: -20%;
+}
+}
+@media (max-width:382px) {
+  .Center-elements-wrapper{
+    margin-left: -480px;
+    margin-top: 75px;
+  }
+  .nav-wrapper{
+    margin-top: -60px;
+    left: 29%;
+  }
+  .Chatbot-Card{
+    top: 110%;
+    right: 3%;
+    height: 400px;
+    width: 350px;
+  }
+  .Feedback-Card{
+    height: 400px;
+    width: 300px;
+    left: 30px;
+    top: 1490px;
+  }
+}
+
+@media (max-width:351px) {
+  .Visualizer{
+    height: 350px;
+    width: 300px;
+    left: 5%;
+    top: -20%;
+}
+  .Center-elements-wrapper{
+    margin-left: -500px;
+    margin-top: 75px;
+  }
+  .Chatbot-Card{
+    top: 110%;
+    right: 5%;
+    height: 350px;
+    width: 300px;
+  }
+  .Feedback-Card{
+    height: 400px;
+    width: 300px;
+    left: 30px;
+    top: 1490px;
+  }
+  .Main-Text{
+    margin-top: -500px;
+  }
+  .logo-menu-wrapper {
+    right: 30px;
+  }
+}
+@media (max-width:323px) {
+  .Feedback-Card{
+    height: 400px;
+    width: 300px;
+    left: 10px;
+  }
+  .messageBox {
+    height: 40px;
+    width: 200px;
+  
+  }
+  #sendButton {
+    margin-left: 30px;
+  }
+  .nav-wrapper{
+    left: 23%;
+  }
+  .Visualizer{
+    height: 300px;
+    width: 250px;
+    left: 15%;
+    top: -10%;
+}
+  .colors-wrapper{
+  width: 104%;
+}
+section{
+  width: 104%;
+}
 }
