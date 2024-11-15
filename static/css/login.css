@@ -4,7 +4,7 @@
     transition: .5s;
 }
 body{
-    height: 92.8vh;
+    height: 125vh;
     width: 100%;
     background: linear-gradient(to bottom,#311747,#000);
 }
@@ -39,7 +39,7 @@ body{
 .form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     background-color: #ffffff;
     padding: 30px;
     width: 450px;

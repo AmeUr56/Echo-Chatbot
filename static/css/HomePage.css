@@ -817,7 +817,7 @@ body {
 /*Responssivness part*/
 @media (max-width:1440px){
   section{
-   height: 101vh;
+   height: 105vh;
   }
   .Hero-Part{
     margin-left: 120px;

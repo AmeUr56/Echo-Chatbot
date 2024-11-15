@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 1f2858f97e3e
+Revision ID: 948348de7975
 Revises: 
-Create Date: 2024-11-05 11:42:43.924009
+Create Date: 2024-11-11 21:25:36.046568
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1f2858f97e3e'
+revision = '948348de7975'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,14 +23,12 @@ def upgrade():
     sa.Column('is_admin', sa.Boolean(), nullable=True),
     sa.Column('name', sa.String(length=10), nullable=False),
     sa.Column('email', sa.String(), nullable=False),
-    sa.Column('password', sa.String(length=30), nullable=False),
-    sa.Column('profile_picture', sa.BLOB(), nullable=True),
+    sa.Column('password', sa.String(), nullable=False),
     sa.Column('ip_address', sa.String(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('ip_address')
+    sa.UniqueConstraint('email')
     )
     op.create_table('discussion',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -39,8 +37,7 @@ def upgrade():
     sa.Column('last_at', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('user_id')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('feedback',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -48,8 +45,7 @@ def upgrade():
     sa.Column('send_at', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('user_id')
+    sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/login.css">
+    <link rel="stylesheet" href="static/css/toast.css">
+
+    <title>{% block title %}{% endblock %}</title>    
+</head>
+<body>
+  <a href="{{ url_for('index') }}"><img src="static/img/logo.png" class="icon" ></a>
+    <h1 class="SignIn">{% block h1 %}{% endblock%}</h1>
+    
+    {% block form %}{% endblock%}
+
+  <!-- Toast Notification -->
+  <div id="toast"></div>
+
+  <!-- Hidden container to pass flash messages to JavaScript -->
+  <div id="flash-messages-data" style="display:none;">
+      {{ get_flashed_messages(with_categories=true) | tojson }}
+  </div>
+
+  <!-- Include JavaScript file -->
+  <script src="static/js/toast.js"></script>
+  
+  <!-- AJAX -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle form submission via AJAX
+        document.getElementById('{% block form_id %}{% endblock %}').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var formData = new FormData(this); // Collect form data
+
+            // Send the AJAX request
+            fetch('{{ url_for(form_endpoint) }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var messageDiv = document.getElementById('message'); // Message display area
+
+                if (data.status === 'error') {
+                    // Display error message (e.g., "Login Required")
+                    messageDiv.innerHTML = `<div style="color: red;font-weight:600;">${data.message}</div>`;
+                } else if (data.status === 'redirect') {
+                    // Redirect to the specified url
+                    window.location.href = data.url;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+<!-- Reset reCAPTCHA Token-->
+
+</body>
+</html>

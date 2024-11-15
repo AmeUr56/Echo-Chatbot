@@ -1,54 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/Profile.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <title>Login</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block css_file %}Profile.css{% endblock %}
+{% block title %}Profile{% endblock %}
+{% block body %}
    <div class="menu-bar">
-    <div style="display: flex;align-items: center;"><a href="HomePage.html"><img src="../static/img/logo.png" class="logo"></a><div class="popup-msg"><p style="font-size: 10px;text-align: center;margin-top: 5px;">ECHO</p></div></div>
+    <div style="display: flex;align-items: center;"><a href="{{ url_for('index') }}"><img src="static/img/logo.png" class="logo"></a><div class="popup-msg"><p style="font-size: 10px;text-align: center;margin-top: 5px;">ECHO</p></div></div>
     <ul>
-      <a href="../templates/HomePage.html"><li><img src="../static/img/home.png" class="Menu-icon"><p>Home</p></li></a>
-      <a href="../templates/HomePage.html"><li><img src="../static/img/chat.png" class="Menu-icon"><p>Chat</p></li></a>
-      <a href=""><li><img src="../static/img/support.png" class="Menu-icon"><p>Contact</p></li></a>
+      <a href="{{ url_for('index') }}#Page1"><li><img src="static/img/home.png" class="Menu-icon"><p>Home</p></li></a>
+      <a href="{{ url_for('index') }}#Page2"><li><img src="static/img/chat.png" class="Menu-icon"><p>Chat</p></li></a>
+      <a href="{{ url_for('index') }}#Page3"><li><img src="static/img/support.png" class="Menu-icon"><p>Contact</p></li></a>
     </ul>
   </div>
   <div class="Main">
     <div class="Section-Indicator">
       <h1 style="color: white;font-weight: 400;">Profile</h1>
     </div>
-    <div class="Data-stats"><h3 style="color: white;margin-left: 20px;margin-top: 10px;font-weight: 400;">Data-stats</h3></div>
+    <div class="Data-stats"><h3 style="color: white;margin-left: 20px;margin-top: 10px;font-weight: 400;">Chat stats</h3></div>
     <div class="Profile-card">
-      <div class="pfp"></div>
-      <div class="modify"><img src="../static/img/modify.png" class="icon"><p></p>
-    </div>
-         <button id="editProfileBtn">Edit Profile</button>
+      {% if user_data['is_super_admin']%}
+        <img src="static/img/super_admin.jpeg" alt="Logo" style="border-radius: 50%;">
+      {% elif user_data['is_admin']%}
+        <img src="static/img/admin.jpeg" alt="Logo" style="border-radius: 50%;">
+      {% elif user_data['picture_path'] %}
+        <img src="static/pfps/{{ user_data['picture_path'] }}.png" class="pfp"/>
+      {% else %}
+        <img src="static/img/user.jpeg" class="pfp"/>
+      {% endif %}
+
+      <p style="color:white;">{{user_data['username']|title}}</p><br>
+      <button id="editProfileBtn">Edit Profile</button>
 
 
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <span id="closeBtn" class="close">&times;</span>
             <h2>Edit Profile</h2>
-            <form id="profileForm">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name">
+            <form id="profileForm" method="POST" action="{{ url_for('profile') }}">
+              {{ form.hidden_tag() }}  
+              
+              <label for="name">New {{ form.name.label.text|title }}</label>
+              <!--<input type="text" id="name" name="name" placeholder="Enter your name">-->
+              {{ form.name(placeholder="Enter New Name") }}
+              {% if not (user_data['is_super_admin'] or user_data['is_admin']) %}
+              <label for="name">New {{ form.picture.label.text|underscore_separate|title }}</label>
+              {{ form.picture(placeholder="Enter New Picture") }}
+              {% endif %}
+              <label for="email">{{ form.new_password.label.text|title }}</label>
+              <!--<input type="password" id="email" name="email" placeholder="Enter your Password">-->
+              {{ form.new_password(placeholder="Enter New Password")}}
 
-                <label for="email">Password:</label>
-                <input type="password" id="email" name="email" placeholder="Enter your Password">
-                <button type="submit">Save Changes</button>
+              <label for="email">{{ form.password.label.text|title }}</label>
+              <!--<input type="password" id="email" name="email" placeholder="Enter your Password">-->
+              {{ form.password(placeholder="Enter your Password")}}
+
+              <div id="message"></div> <!-- This is where success/error messages will appear -->
+              <br>
+              <button type="submit">Save Changes</button>
             </form>
         </div>
     </div>
-
-         <script src="../static/js/User-info.js"></script>
+         <script src="static/js/User-info.js"></script>
     </div>
     </div>
     
   </div>
-</body>
-</html>
+        <!-- AJAX -->
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            // Handle form submission via AJAX
+            document.getElementById('profileForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+        
+                var formData = new FormData(this); // Collect form data
+        
+                // Send the AJAX request
+                fetch('{{ url_for("profile") }}', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    var messageDiv = document.getElementById('message'); // Message display area
+        
+                    if (data.status === 'error') {
+                        // Display error message (e.g., "Login Required")
+                        messageDiv.innerHTML = `<div style="color: red;font-weight:600;">${data.message}</div>`;
+                    } else if (data.status === 'redirect') {
+                        // Redirect to the specified url
+                        window.location.href = data.url;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+        </script>
+{% endblock %}
+

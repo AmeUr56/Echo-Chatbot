@@ -1,44 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/HomePage.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <title>Echo</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block css_file %}HomePage.css{% endblock %}
+{% block title %}Echo{% endblock %}
+{% block body %}
 <section id="Page1">
     <nav>
 
         <div class="logo-menu-wrapper">
           <div class="logo">
-              <img src="../static/img/logo.png" alt="Logo">
+            {% if user_data['is_super_admin']%}
+              <img src="static/img/super_admin.jpeg" alt="Logo" style="border-radius: 50%;">
+            {% elif user_data['is_admin']%}
+              <img src="static/img/admin.jpeg" alt="Logo" style="border-radius: 50%;">
+            {% elif user_data['picture_path'] %}
+              <img src="static/pfps/{{ user_data['picture_path'] }}.png" alt="Logo" style="border-radius: 50%;">
+            {% else %}
+              <img src="static/img/user.jpeg" alt="Logo" style="border-radius: 50%;">
+            {% endif %}
+
           </div>
           <div class="menu" id="menuButton">
-              <img src="../static/img/menu-button.png" alt="Menu">
+              <img src="static/img/menu-button.png" alt="Menu">
           </div>
       </div>
   
       <div id="menuBar" class="menu-bar">
        
           <ul>
-              <img src="../static/img/close.png" id="close">
-              <a href="Profile.html"><li><img src="../static/img/user.png" class="Menu-icon">Profile</li></a>
-              <a href="#Page3"><li id="Contact"><img src="../static/img/customer-service.png" class="Menu-icon">Contact</li></a>
-              <a href="Login.html"><li>+   Login/Register</li></a>
+              <img src="static/img/close.png" id="close">
+              <a href="{{ url_for('profile') }}"><li><img src="static/img/user.png" class="Menu-icon">Profile</li></a>
+              <a href="#Page3"><li id="Contact"><img src="static/img/customer-service.png" class="Menu-icon">Contact</li></a>
+              <a href="{{ url_for('login') }}"><li>+   Login/Signup</li></a>
           </ul>
-          <button class="Btn">
-  
+          <form method="POST" action="{{ url_for('logout') }}">
+            {{ forms['logout_form'].hidden_tag() }}
+          <button class="Btn" type="submit">
             <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
-            
             <div class="text">Logout</div>
           </button>
+        </form>
       </div>
 
-      <script src="../static/js/script.js"></script>
+      <script src="static/js/script.js"></script>
     </nav>
 
      <div class="Contributers">
@@ -50,32 +52,31 @@
 
         <div class="card">
             <div class="user-profile">
-                <img src="../static/img/user-pfp1.png" class="user-pfp">
+                <img src="static/img/user-pfp1.png" class="user-pfp">
                 <h1 style="color: white;">User1</h1>
             </div>
             <div class="card-details">
             <div style="margin-left: 20px;"><span style="color: white;margin-right: 3px;">928</span><span style="color: #2e2e2e;">FILES</span></div>
-            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">1</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>+11.1%</p><img src="../static/img/trend-up.png" class="indicator" ></div></div>
+            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">1</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>+11.1%</p><img src="static/img/trend-up.png" class="indicator" ></div></div>
             </div>
         </div>
 
         <div class="card card2">
             <div class="user-profile">
-                <img src="../static/img/user-pfp1.png" class="user-pfp">
+                <img src="static/img/user-pfp1.png" class="user-pfp">
                 <h1 style="color: white;">User2</h1>
             </div>
             <div class="card-details">
             <div style="margin-left: 20px;"><span style="color: white;margin-right: 3px;">623</span><span style="color: #2e2e2e;">FILES</span></div>
-            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">3</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>-3%</p><img src="../static/img/trend-down.png" class="indicator" ></div></div>
+            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">3</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>-3%</p><img src="static/img/trend-down.png" class="indicator" ></div></div>
             </div>
         </div>
-
     </div> 
     <div class="Center-elements-wrapper">
         <div class="nav-wrapper">
-            <a href="#Page1"><div class="icon-wrapper icon1"><img src="../static/img/home.png" class="icon home"></div></a>
-            <a href="#Page2"><div class="icon-wrapper icon2"><img src="../static/img/chat.png" class="icon chat"></div></a>
-            <a href="#Page3"><div class="icon-wrapper icon3"><img src="../static/img/teach.png" class="icon teach"></div></a>
+            <a href="#Page1"><div class="icon-wrapper icon1"><img src="static/img/home.png" class="icon home"></div></a>
+            <a href="#Page2"><div class="icon-wrapper icon2"><img src="static/img/chat.png" class="icon chat"></div></a>
+            <a href="#Page3"><div class="icon-wrapper icon3"><img src="static/img/teach.png" class="icon teach"></div></a>
         </div>
 
     <div class="info-slider-wrapper">
@@ -85,7 +86,7 @@
     </div>
      
     <div class="Hero-Part">
-        <div class="Hero-Pic-wrapper"><img src="../static/img/Hero-Pic.png" class="Hero-Picture"><span style="font-size: 40px;font-weight: 300;color: white;">Echo</span></div>
+        <div class="Hero-Pic-wrapper"><img src="static/img/Hero-Pic.png" class="Hero-Picture"><span style="font-size: 40px;font-weight: 300;color: white;">Echo</span></div>
         <div class="Hero-Text">AI  Chat Bot</div>
     </div>
 
@@ -102,7 +103,7 @@
 </div>
     <div class="colors-wrapper">
         <div class="purple"></div>
-        <img src="../static/img/Visualizer.jpg" class="Visualizer">
+        <img src="static/img/Visualizer.jpg" class="Visualizer">
         <div class="blue"></div>
     </div>
 </section>
@@ -110,7 +111,7 @@
 
    <div class="Chatbot-Card">
      <nav>
-        <div class="pfp"><img src="../static/img/logo.png" class="pfp1"></div>
+        <div class="pfp"><img src="static/img/logo.png" class="pfp1"></div>
         <p>Echo</p>
     </nav>
      <div class="Chat"></div>
@@ -135,23 +136,24 @@
         </button>
       </div>
       </div>
-      <div class="mic-button"><img src="../static/img/microphone.png" class="mic-icon"></div>
+      <div class="mic-button"><img src="static/img/microphone.png" class="mic-icon"></div>
    </div>
    <div class="Main-Text"><p class="Page2-text">Try it yourself</p></div>
 </section>
 <section id="Page3">
    <div class="Feedback-text"><p class="Page3-text">Your Opinion is important</p></div>
    <div class="Feedback-Card">
-
-   <div class="form">
-    <input class="input" placeholder="Type your text" required="" type="text">
-    <span class="input-border"></span>
-  </div>
-  <button class="button">
-    Submit
-  </button>
+   <form id="feedbackForm" method="POST" action="{{ url_for('feedback') }}">
+    {{ forms['feedback_form'].hidden_tag() }}
+    <div class="form">
+        <!--<input class="input" placeholder="Type your text" required="" type="text">-->
+        {{ forms['feedback_form'].opinion(class="input",placeholder="Type your text") }}
+        <span class="input-border"></span>
+    </div>
+    <!--<button class="button">Submit</button>-->
+    {{ forms['feedback_form'].submit(class='button') }}
+    </form>
    </div>
 
 </section>
-</body>
-</html>
+{% endblock %}
