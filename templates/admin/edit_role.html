@@ -1,0 +1,25 @@
+{% extends "admin/base_admin.html" %}
+{% block body %}
+<div class="main-content">
+    <div class="container mt-4">
+        <h2>Edit Role</h2>
+        
+        <form method="POST" action="{{ url_for('role.edit',user_id=role.user_id) }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label>{{ form.is_super_admin.label.text|underscore_separate }}</label>
+                {{ form.is_super_admin(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.is_admin.label.text|underscore_separate }}</label>
+                {{ form.is_admin(class="form-control") }}            
+            </div>
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

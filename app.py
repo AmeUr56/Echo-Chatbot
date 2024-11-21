@@ -4,11 +4,11 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager,AnonymousUserMixin,current_user
-from flask_admin import Admin,AdminIndexView,BaseView, expose
-from flask_admin.contrib.sqla import ModelView
+from flask_admin import Admin
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_caching import Cache
+from flask_socketio import SocketIO
 
 import os
 from dotenv import load_dotenv
@@ -21,6 +21,7 @@ csrf = CSRFProtect()
 login_manager = LoginManager()
 limiter = Limiter(key_func=get_remote_address)
 cache = Cache()
+socketio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
@@ -28,6 +29,9 @@ def create_app():
     
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+    app.config['GOOGLE_CLIENT_ID'] = os.getenv('GOOGLE_CLIENT_ID')
+    app.config['GOOGLE_CLIENT_SECRET'] = os.getenv('GOOGLE_CLIENT_SECRET')
+    app.config['CACHE_TYPE'] = "simple"
     
     # Link Initialized Extentions to the App
     db.init_app(app)
@@ -36,8 +40,8 @@ def create_app():
     csrf.init_app(app)
     limiter.init_app(app)
     cache.init_app(app)
-
-    #-----------------------Login Manger-----------------------#
+    socketio.init_app(app)
+    #-----------------------Login Manager-----------------------#
     login_manager.init_app(app)
     
     # Redirect to it if not logged in
@@ -69,71 +73,32 @@ def create_app():
 
     # Set the custom AnonymousUser class
     login_manager.anonymous_user = AnonymousUser
-
-    #----------------------------------------------------------#
+    #---------------------------------------------------------#
 
     #-----------------------Admin Panel-----------------------#
-    # Admin Panel
-    class MyAdminIndexView(AdminIndexView):
-        def is_accessible(self):
-            return current_user.is_admin
+    # Import Models,Views
+    from models import User,Feedback,Role,Stats,Discussion
+    from views import UserModelView,RoleModelView,StatsModelView,FeedbackModelView,DiscussionModelView,ProfilePicturesView,FeaturesView,DashboardView
 
-        def inaccessible_callback(self, name, **kwargs):
-            return redirect(url_for('index'))
-    
     # Initialize Flask-Admin instance
-    admin = Admin(app, name='Admin', template_mode='bootstrap3', index_view=MyAdminIndexView())
-
-    # Add views for each model
-    class UserModelView(ModelView):
-        column_display_fk = True
-        column_list = ['id','is_admin','name','picture','email','password','ip_address','created_at','updated_at']
-
-        def is_accessible(self):
-            return current_user.is_admin
-
-        def inaccessible_callback(self, name, **kwargs):
-            return redirect(url_for('/admin'))
-        
-    class RoleModelView(ModelView):
-        column_display_fk = True
-        column_list = ['id','user_id','is_super_admin','is_admin']
-
-        def is_accessible(self):
-            return current_user.is_super_admin
-
-        def inaccessible_callback(self, name, **kwargs):
-            return redirect(url_for('/admin'))
+    admin = Admin(app, name='Admin', template_mode='bootstrap3', index_view=DashboardView(name='Dashboard',endpoint=""))
     
-    class DiscussionModelView(ModelView):        
-        column_display_fk = True
-        column_list = ['id','user_id','length','time','last_at']
-
-        def is_accessible(self):
-            return current_user.is_admin
-
-        def inaccessible_callback(self, name, **kwargs):
-            return redirect(url_for('/admin'))
-        
-    class FeedbackModelView(ModelView):
-        column_display_fk = True
-        column_list = ['id','user_id','opinion','send_at']
-
-        def is_accessible(self):
-            return current_user.is_admin
-
-        def inaccessible_callback(self, name, **kwargs):
-            return redirect(url_for('/admin'))
-    
-    from models import User,Discussion,Feedback,Role
+    # Link Each View to a Model
     admin.add_view(UserModelView(User, db.session))
     admin.add_view(RoleModelView(Role, db.session))
-    admin.add_view(DiscussionModelView(Discussion, db.session))
+    admin.add_view(StatsModelView(Stats, db.session))
     admin.add_view(FeedbackModelView(Feedback, db.session))
+    admin.add_view(DiscussionModelView(Discussion, db.session))
+    admin.add_view(ProfilePicturesView(name='ProfilePictures',endpoint="pfps"))
+    admin.add_view(FeaturesView(name='Features',endpoint="features"))
     #----------------------------------------------------------#
 
+    #-----------------------Google OAuth-----------------------#
+
+    #----------------------------------------------------------#
+    
     # Link Endpoints to the app
     from routes import register_routes
-    register_routes(app,db,bcrypt,limiter,cache)
+    register_routes(app,db,bcrypt,limiter,cache,socketio)
     
     return app

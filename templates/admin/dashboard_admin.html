@@ -1,0 +1,67 @@
+{% extends "admin/base_admin.html" %}
+
+{% block body %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="main-content">
+        <div class="col-md-10">
+            <div class="container mt-4">
+                <h2 class="text-center">Dashboard</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-primary mb-4">
+                            <div class="card-header">Total Users</div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ total_users }}</h5>
+                                <h5 class="card-title"> &nbsp;&nbsp;</h5>
+
+                                <p class="card-text">The total number of registered users on the platform.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success mb-4">
+                            <div class="card-header">Active User</div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ active_users }}</h5>
+                                <h5 class="card-title">&nbsp;&nbsp;</h5>
+                        
+                                <p class="card-text">Today's active users.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-warning mb-4">
+                            <div class="card-header">Roles</div>
+                            <div class="card-body">
+                                <h5 class="card-title">- Super Admins: {{ role_counts[0] }}</h5>
+                                <h5 class="card-title">- Admins: {{ role_counts[1] }}</h5>
+                                <p class="card-text">The number of users with each role.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>Daily Singups:</h2>
+            <h5>Select Date Range</h5>
+            <form action="{{ url_for('admin.date_range') }}" method="POST">
+                {{ form.hidden_tag() }}
+                
+                <div class="form-group">
+                    <label>{{ form.start_date.label.text|underscore_separate|upper }}</label>
+                    {{ form.start_date(class="form-control") }}
+                    &nbsp;&nbsp;
+                    <label>{{ form.end_date.label.text|underscore_separate|upper }}</label>
+                    {{ form.end_date(class="form-control") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+            
+            <img src="{{ url_for('static', filename='img/signup_dates.png') }}" />
+        </div>
+    </div>
+</div>
+{% endblock %}

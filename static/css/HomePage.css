@@ -168,7 +168,7 @@ body {
 
 .menu-bar li {
   padding: 15px;
-  margin-top: 50px;
+  margin-top: 30px;
   width: 200px;
   margin-left: 10px;
   border-radius: 20px;
@@ -582,6 +582,21 @@ body {
     border-radius: 100%; 
     margin-left: 20px;
 }
+.clean-icon{
+  height: 50px;
+  width: 50px;
+  border-radius: 100%; 
+  position: relative;
+  margin-left: 260px;
+  background-color: #000;
+}
+.clean-icon-img{
+  height: 50px;
+  width: 50px;
+  background-color: #000;
+  margin-left: -10px;
+  margin-top: -2px;
+}
 .pfp1{
   height: 50px;
   width: 50px;
@@ -594,8 +609,13 @@ body {
   margin-left: 10px;
 }
 .Chat{
-    height: 400px ;
+    overflow-y: auto;
+    height: 500px ;
     background: linear-gradient(to top,#311747,#0e0b0f);
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 10px;
 }
 .Chat-input{
     height: 50px;
@@ -603,6 +623,29 @@ body {
     border-radius: 0 0 10px 10px;
     background-color: rgb(0, 0, 0);
     display: flex;
+}
+.message {
+  padding: 8px 12px;
+  margin: 5px 0;
+  border-radius: 5px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.user-message {
+  align-self: flex-start;
+  position: relative;
+  right: -100px;
+  background-color: #EEEEEE;
+  color: #311747;
+  text-align: right;
+}
+
+.ai-message {
+  background-color: #311747;
+  color: #fff;
+  align-self: flex-start;
+  text-align: left;
 }
 .messageBox {
     width: fit-content;

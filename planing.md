@@ -1,19 +1,29 @@
 ## ER Models:
 #### User:
-- Id(Int)(Incremental-Unique)
-- is_admin(Bool)(Default=False)
+- Id(Int)(Primary Key)
 - Name(String)(Required-Length(10))
 - Email(String)(Required-Unique)
 - Password(String)(Required)
-- ProfilePicture(String)
+- ProfilePicture(Bool)
 - IpAddress(String)
 - created_at(DateTime)
 - updated_at(DateTime)
-    
+
+#### Role:
+- Id(Int)(Primary Key)
+- IsSuperAdmin(Bool)
+- IsAdmin(Bool)
+
+#### Stats:
+- Id(Int)(Primary Key)
+- Length(Int)
+- Prompt(Int)
+- LastAt(DateTime)
+
 #### Discussion(Name,Type,Constains):
 - Id(Int)(Incremental-Unique)
-- Length in Words(Int)(Default=0)
-- Time in Seconds(Int)(Default=0)
+- Prompt(String)(Required,Length(500))
+- Response(String)()
 - last_at(DateTime)
 
 #### Feedback
@@ -102,4 +112,3 @@
 
 #### Profile
 - only loggedin users(redirect to login page)
-

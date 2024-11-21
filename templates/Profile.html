@@ -14,7 +14,11 @@
     <div class="Section-Indicator">
       <h1 style="color: white;font-weight: 400;">Profile</h1>
     </div>
-    <div class="Data-stats"><h3 style="color: white;margin-left: 20px;margin-top: 10px;font-weight: 400;">Chat stats</h3></div>
+    <div class="Data-stats"><h3 style="color: white;margin-left: 20px;margin-top: 10px;font-weight: 400;">Chat stats</h3>
+    <h4 style="color: white;margin-left: 20px;margin-top: 10px;font-weight: 400;">Prompts: {{ user_data['stats'][0] }}</h4>
+    <h4 style="color: white;margin-left: 20px;margin-top: 10px;font-weight: 400;">Letters: {{ user_data['stats'][1] }}</h4>
+
+    </div>
     <div class="Profile-card">
       {% if user_data['is_super_admin']%}
         <img src="static/img/super_admin.jpeg" alt="Logo" style="border-radius: 50%;">
@@ -41,7 +45,7 @@
               <!--<input type="text" id="name" name="name" placeholder="Enter your name">-->
               {{ form.name(placeholder="Enter New Name") }}
               {% if not (user_data['is_super_admin'] or user_data['is_admin']) %}
-              <label for="name">New {{ form.picture.label.text|underscore_separate|title }}</label>
+                <label for="name">New {{ form.picture.label.text|underscore_separate|title }}</label>
               {{ form.picture(placeholder="Enter New Picture") }}
               {% endif %}
               <label for="email">{{ form.new_password.label.text|title }}</label>
@@ -60,38 +64,37 @@
     </div>
          <script src="static/js/User-info.js"></script>
     </div>
-    </div>
     
   </div>
         <!-- AJAX -->
         <script>
-          document.addEventListener('DOMContentLoaded', function() {
-            // Handle form submission via AJAX
-            document.getElementById('profileForm').addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent the default form submission
-        
-                var formData = new FormData(this); // Collect form data
-        
-                // Send the AJAX request
-                fetch('{{ url_for("profile") }}', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    var messageDiv = document.getElementById('message'); // Message display area
-        
-                    if (data.status === 'error') {
-                        // Display error message (e.g., "Login Required")
-                        messageDiv.innerHTML = `<div style="color: red;font-weight:600;">${data.message}</div>`;
-                    } else if (data.status === 'redirect') {
-                        // Redirect to the specified url
-                        window.location.href = data.url;
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            });
-        });
-        </script>
+          document.addEventListener('DOMContentLoaded', function () {
+              const form = document.getElementById('profileForm');
+              const messageDiv = document.getElementById('message');
+      
+              form.addEventListener('submit', function (event) {
+                  event.preventDefault();
+      
+                  const formData = new FormData(this);
+      
+                  fetch('{{ url_for("profile") }}', {
+                      method: 'POST',
+                      body: formData,
+                  })
+                      .then(response => response.json())
+                      .then(data => {
+                          if (data.status === 'error') {
+                              messageDiv.innerHTML = `<div style="color: red; font-weight: 600;">${data.message}</div>`;
+                          } else if (data.status === 'redirect') {
+                              window.location.href = data.url;
+                          }
+                      })
+                      .catch(error => {
+                          console.error('Error:', error);
+                          messageDiv.innerHTML = `<div style="color: red; font-weight: 600;">An unexpected error occurred.</div>`;
+                      });
+              });
+          });
+      </script>
 {% endblock %}
 

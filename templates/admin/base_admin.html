@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Interface</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for("static",filename='css/admin.css')}}">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Admin Interface</div>
+        <div>
+            <a href="{{ url_for("admin.index") }}">Dashboard</a>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        {% with base_url = request.url_root %}
+                {% for link in ['user','role','stats', 'feedback','discussion','pfps', 'features'] %}
+                    {% if not current_user.is_super_admin and (link == 'role' or link == "discussion") %}
+                    
+                    {% else %}
+                    <a href="{{ base_url }}admin/{{ link }}">
+                    {% if link == 'pfps' %}
+                        {% set link = 'ProfilePictures' %}
+                    {% endif %}
+                        {{ link|title }}</a>
+                    {% endif %}
+                {% endfor %}
+        {% endwith %}
+    </div>
+    <div class="main-content">
+
+        <!-- Flash messages -->
+        <div class="container mt-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="alert-container">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    {% block body %}{% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -14,7 +14,7 @@ function showToast(message, category) {
     // Remove the toast after 3 seconds
     setTimeout(function () {
         toast.classList.remove("show");
-    }, 5000); // Toast will disappear after 3 seconds
+    }, 1000); // Toast will disappear after 3 seconds
 }
 
 // Show the toast notification on page load if flash messages exist

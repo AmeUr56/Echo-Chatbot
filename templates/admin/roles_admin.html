@@ -1,0 +1,48 @@
+{% extends "admin/base_admin.html" %}
+{% block body %}
+<div class="main-content">
+    <h1>Role View</h1>
+    <div class="user-list">
+        <h2>Filter</h2>
+        <form action="{{ url_for('role.filter') }}" method="POST">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                <label>{{ form.user_id.label.text|underscore_separate|upper }}</label>
+                {{ form.user_id(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div><br>
+    <a href="{{ url_for('role.create') }}" class="btn btn-success mb-3">Create</a><br><br>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Edit</th>
+                {% for col in column_list %}
+                    <th>{{ col|underscore_separate|upper }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for role in roles %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('role.edit',user_id=role.user_id) }}" class="btn btn-primary btn-sm">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{{ url_for('role.delete',user_id=role.user_id) }}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                    {% for attribute in column_list %}
+                        <td>
+                            {{ role|get_attr(attribute) }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

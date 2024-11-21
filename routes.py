@@ -1,6 +1,7 @@
-from flask import render_template,redirect,request,url_for,flash,jsonify
+from flask import render_template,request,redirect,request,url_for,flash,jsonify,session
 from flask_login import login_user,logout_user,login_required,current_user
 from flask_admin import AdminIndexView
+from sqlalchemy.sql import text
 
 from datetime import datetime,timezone
 from PIL import Image
@@ -9,27 +10,44 @@ from werkzeug.utils import secure_filename
 from werkzeug.exceptions import HTTPException
 import time
 
-from forms import SignupForm,LoginForm,LogoutForm,FeedbackForm,UpdateProfileForm
-from models import User,Feedback,Role
+from forms import SignupForm,LoginForm,LogoutForm,FeedbackForm,UpdateProfileForm,ClearDiscussion
+from models import User,Feedback,Role,Discussion,Stats
+from chat import echo_response,activate_echo#,query
+from script import create_conversation_history
 
-def register_routes(app,db,bcrypt,limiter,cache):
+def register_routes(app,db,bcrypt,limiter,cache,socketio):
 
     @app.route('/')
     @limiter.limit("5 per second")
     def index():
+        session.permanent = True
+        
+        query = text("""
+            SELECT u.id,u.name,u.picture,s.length,s.prompts
+            FROM Stats as s
+            INNER JOIN User as u
+                ON s.user_id = u.id
+            ORDER BY s.length,s.prompts DESC
+            LIMIT 2;
+        """)
+        
+        ranking = db.session.execute(query).all()
+        
         user_data = {
             'picture_path': current_user.id if current_user.picture else False,
             'is_super_admin': current_user.is_super_admin,
-            'is_admin': current_user.is_admin
+            'is_admin': current_user.is_admin,
         }
         forms = {
             'feedback_form': FeedbackForm(),
-            'logout_form': LogoutForm()
+            'logout_form': LogoutForm(),
+            'clear_discussion':ClearDiscussion()
         }
-        return render_template('HomePage.html',forms=forms,user_data=user_data)
+    
+        return render_template('HomePage.html',forms=forms,user_data=user_data,ranking=ranking)
     
     @app.route('/signup',methods=['GET','POST'])
-    @limiter.limit("10 per minute")
+    @limiter.limit("1 per second")
     def signup():
         form = SignupForm()
 
@@ -59,21 +77,13 @@ def register_routes(app,db,bcrypt,limiter,cache):
                 db.session.add(new_user)
                 db.session.commit()
 
-                # Add role to the db
-                user_role = Role(user_id=new_user.id)
-                db.session.add(user_role)
-                db.session.commit()
-
                 flash("Registrated Succefully","success")
                 return jsonify({"status": "redirect", "url": url_for('login')})
 
             else:
-                # Display Errors if form validation fails
-                for field, errors in form.errors.items():
+                for field,errors in form.errors.items():
                     for error in errors:
-                        if error == "The response parameter is missing.":
-                            error = "reCAPTCHA not solved"
-                        return jsonify({"status":"error","message":f'{error}'})
+                        return jsonify({"status":"error","message":error})
         
         current_time = time.time() 
         return render_template('Signup.html',form=form,form_endpoint='signup',current_time=current_time)
@@ -89,7 +99,7 @@ def register_routes(app,db,bcrypt,limiter,cache):
             return False
         
     @app.route('/login',methods=['GET','POST'])
-    @limiter.limit("5 per minute")
+    @limiter.limit("5 per second")
     def login():
         if current_user.is_authenticated:
             flash("Already Logged in","error")
@@ -113,19 +123,16 @@ def register_routes(app,db,bcrypt,limiter,cache):
                     if bcrypt.check_password_hash(user.password,password):
                         login_user(user)
                         flash("Logged in Succefully","success")
-                        return jsonify({"status": "redirect", "url": url_for('index')})
-            
+                        return jsonify({"status":"redirect","url": f"{url_for('index')}"})
                     else:
                         return jsonify({"status":"error","message":"Password incorrect"})
                 else:
                     return jsonify({"status":"error","message":"Email or Username do not exist"})
-                        
+    
             else:
                 for field,errors in form.errors.items():
                     for error in errors:
-                        if error == "The response parameter is missing.":
-                            error = "reCAPTCHA not solved"
-                        return jsonify({"status":"error","message":f'{error}'})
+                        return jsonify({"status":"error","message":error})
         
         current_time = time.time() 
         return render_template('Login.html',form=form,form_endpoint='login',current_time=current_time)
@@ -143,7 +150,7 @@ def register_routes(app,db,bcrypt,limiter,cache):
             return redirect(url_for('login'))
     
     @app.route('/feedback',methods=['POST'])
-    @limiter.limit("3 per second")
+    @limiter.limit("1 per second")
     def feedback():
         form = FeedbackForm()
         if form.validate_on_submit() and current_user.is_authenticated:
@@ -158,15 +165,35 @@ def register_routes(app,db,bcrypt,limiter,cache):
         else:
             flash("Login Required","error")
             return redirect(url_for('login'))
+    
+    @cache.cached(timeout=30,key_prefix=lambda:f"user_{current_user.id}")
+    def get_userdata():
+        user = User.query.filter_by(id=current_user.id).first()
 
+        
+        query = text("""
+            SELECT prompts,length
+            FROM Stats
+            WHERE user_id = :user_id
+        """)
+        stats = db.session.execute(query,{"user_id":user.id}).first()
+        
+        user_data = {
+            'username':user.name,
+            'picture_path': current_user.id if current_user.picture else False,
+            'is_super_admin': current_user.is_super_admin,
+            'is_admin': current_user.is_admin,
+            'stats':stats
+        }
+        return user_data
+    
     @app.route('/profile',methods=['GET','POST'])
     @limiter.limit("5 per second")
     @login_required
-    @cache.cached(timeout=300,key_prefix=lambda:f"user_{current_user.id}")
     def profile():
-        form = UpdateProfileForm()
-
         user = User.query.filter_by(id=current_user.id).first()
+        
+        form = UpdateProfileForm(obj=user)
         if request.method == 'POST':
             if form.validate_on_submit():
                 name = form.name.data.strip()
@@ -209,25 +236,155 @@ def register_routes(app,db,bcrypt,limiter,cache):
             else:
                 for field,errors in form.errors.items():
                     for error in errors:
-                        if error == "The response parameter is missing.":
-                            error = "reCAPTCHA not solved"
                         return jsonify({"status":"error","message":error})
                     
-        user_data = {
-            'username':user.name,
-            'picture_path': current_user.id if current_user.picture else False,
-            'is_super_admin': current_user.is_super_admin,
-            'is_admin': current_user.is_admin
-        }
+        user_data = get_userdata()
         return render_template('profile.html',form=form,user_data=user_data)
+   
+    @app.route('/clear_discussion',methods=['POST'])
+    @limiter.limit("1 per second")
+    @login_required
+    def clear_discussion():
+        form = ClearDiscussion()
+        if form.validate_on_submit():
+            discussions = Discussion.query.filter_by(user_id=current_user.id).all()
+
+            if not discussions:
+                flash("No discussions to clear",'error')
+                return redirect(url_for('index'))
+        
+            for discussion in discussions:
+                db.session.delete(discussion)
+            db.session.commit()
+        
+            flash("Discussion Succefuly Cleared",'success')
+            return redirect(url_for('index'))
+        
+    user_conversations = {}
+    @socketio.on('connect')
+    @login_required
+    def handle_connect():
+        user_id = current_user.id
+
+        # Fetch the length of discussion
+        latest_stats = Stats.query.filter_by(user_id=user_id).first()
+        if not latest_stats:
+            stats = Stats(user_id=user_id,last_at=datetime.now(timezone.utc),prompts=0)
+            db.session.add(stats)
+            db.session.commit()
+            session['discussion_length'] = 0
+        else:
+            session['discussion_length'] = latest_stats.length
+
+        del latest_stats
+
+        # Fetch the latest discussion index
+        latest_discussion = Discussion.query.filter_by(user_id=user_id).order_by(Discussion.index.desc()).first()
+        session['discussion_index'] = latest_discussion.index if latest_discussion else 0
+
+        del latest_discussion
+        if not session['discussion_index']:
+            user_conversations[user_id] = []
+
+        # Fetch the Number of Prompts from Stats
+        num_prompts = Stats.query.filter_by(user_id=user_id).first().prompts
+        session['prompts'] = num_prompts
+        
+        del num_prompts
+        
+        # Fetch the Prompts & Responses for user
+        query = text("""
+            SELECT prompt,response
+            FROM Discussion
+            WHERE user_id = :user_id
+            ORDER BY "index"
+        """)
+
+        result = db.session.execute(query, {'user_id': current_user.id})
+
+        user_conversations[user_id] = create_conversation_history(result)
+
+        user_conversation = user_conversations[user_id]
+        formatted_conversation = []
+        for i in range(0,session['discussion_index']*2,2):
+            prompt = user_conversation[i]['content']
+            response = user_conversation[i+1]['content']
+            formatted_conversation.append({
+                "user_message": prompt,
+                "ai_response": response
+            })
+        del user_conversation
+        
+        socketio.emit("conversation_history", formatted_conversation, to=request.sid)
+        activate_echo()
+        
+    @socketio.on('send_message')
+    @login_required
+    def handle_message(message):            
+        user_id = current_user.id
+
+        # Get conversation history
+        history = user_conversations[user_id]
+
+        sid = request.sid
+        response = []
+        for word in echo_response(history,message):
+            socketio.emit("receive_message", word,to=sid)
+            response.append(word)
+         
+        session['discussion_index'] += 1
+        
+        response = "".join(response)
+
+        new_discussion = Discussion(prompt=message,response=response,index=session['discussion_index'],user_id=current_user.id)
+        db.session.add(new_discussion)
+        db.session.commit()
+        
+        session['discussion_length'] += len(message)
+        session['prompts'] += 1
+    
+    #@socketio.on('send_audio')
+    #@login_required
+    #def handle_audio_data(data):
+    #    sid = request.sid
+    #
+    #   filename = fr"static/audio/{current_user.id}.wav"
+    #    with open(filename, 'wb') as f:
+    #        f.write(data)
+    #    
+    #    transcription = query(filename).get("text","")
+    #    socketio.emit("receive_message",transcription,to=sid)
+    
+
+    @socketio.on("disconnect")
+    def handle_user_disconnect():
+        user_id = current_user.id
+
+        stats = Stats.query.filter_by(user_id=user_id).first()
+        stats.length = session['discussion_length']
+        stats.last_at = datetime.now(timezone.utc)
+        stats.prompts = session['prompts']
+        
+        db.session.commit()
+
+        if user_id in user_conversations.keys():
+            del user_conversations[user_id]
+        
+        #for elem in ['discussion_index','discussion_length','last_at']:
+        #    session.pop(elem,None)
+        
     
     @app.errorhandler(HTTPException)
     def handle_error(error):
-        if error.code == 403 or error.code == 404:
-            return render_template('Error.html')
+        return render_template('Error.html')
     
+
     @app.template_filter("underscore_separate")
     def underscore_separate(s):
         s = s.split("_")
         s = " ".join(s)
         return s
+    
+    @app.template_filter("get_attr")
+    def get_attr(entity,attr):
+        return getattr(entity,attr,None)

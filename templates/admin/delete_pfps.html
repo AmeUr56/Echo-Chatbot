@@ -1,0 +1,17 @@
+{% extends "admin/base_admin.html" %}
+{% block body %}
+<div class="main-content">
+    <div class="container mt-4">
+        <h2>Delete Profile Picture</h2>
+        <h5>Are you sure want to Delete?</h5>
+        <form method="POST" action="{{ url_for('pfps.delete',user_id=user_id) }}">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-danger btn-sm") }}
+            </div>
+            </form>
+        </form>
+    </div>
+</div>
+{% endblock %}

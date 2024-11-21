@@ -1,0 +1,29 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block body %}
+<div class="main-content">
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center">Download Database File</h2>
+                <div class="text-center">
+                    <a href="{{ url_for('features.install_db') }}" class="btn btn-primary btn-lg">
+                        Download
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center">Download ProfilePictures</h2>
+                <div class="text-center">
+                    <a href="{{ url_for('features.install_pfps') }}" class="btn btn-primary btn-lg">
+                        Download
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

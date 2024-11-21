@@ -2,14 +2,17 @@
 {% block css_file %}HomePage.css{% endblock %}
 {% block title %}Echo{% endblock %}
 {% block body %}
+<!--Conversation Styling-->
+
+
 <section id="Page1">
     <nav>
 
         <div class="logo-menu-wrapper">
           <div class="logo">
-            {% if user_data['is_super_admin']%}
+            {% if user_data['is_super_admin'] %}
               <img src="static/img/super_admin.jpeg" alt="Logo" style="border-radius: 50%;">
-            {% elif user_data['is_admin']%}
+            {% elif user_data['is_admin'] %}
               <img src="static/img/admin.jpeg" alt="Logo" style="border-radius: 50%;">
             {% elif user_data['picture_path'] %}
               <img src="static/pfps/{{ user_data['picture_path'] }}.png" alt="Logo" style="border-radius: 50%;">
@@ -29,7 +32,8 @@
               <img src="static/img/close.png" id="close">
               <a href="{{ url_for('profile') }}"><li><img src="static/img/user.png" class="Menu-icon">Profile</li></a>
               <a href="#Page3"><li id="Contact"><img src="static/img/customer-service.png" class="Menu-icon">Contact</li></a>
-              <a href="{{ url_for('login') }}"><li>+   Login/Signup</li></a>
+              <a href="{{ url_for('signup') }}"><li>+   Signup</li></a>
+              <a href="{{ url_for('login') }}"><li>+   Login</li></a>
           </ul>
           <form method="POST" action="{{ url_for('logout') }}">
             {{ forms['logout_form'].hidden_tag() }}
@@ -45,32 +49,31 @@
 
      <div class="Contributers">
         <div class="green-dot">.</div>
-        <p style="color: white;font-size: 13px;">Live Contributers Tracker</p>
+        <p style="color: white;font-size: 13px;">Top Contributers Tracker</p>
     </div>
     
     <div class="client-cards">
-
-        <div class="card">
-            <div class="user-profile">
-                <img src="static/img/user-pfp1.png" class="user-pfp">
-                <h1 style="color: white;">User1</h1>
+        {% for i in range(ranking|length) %}
+            {% if i == 1 %}
+                <div class="card card2">
+            {% else %}
+                <div class="card">
+            {% endif %}
+                <div class="user-profile">
+                    {% if ranking[i][2] %}
+                        <img src="static/pfps/{{ ranking[i][0] }}.png" class="user-pfp" style="border-radius: 50%;">
+                    {% else %}
+                        <img src="static/img/user.jpeg" class="user-pfp" style="border-radius: 50%;">
+                    {% endif %}
+                    <h1 style="color: white;">{{ ranking[i][1] }}</h1>
+                </div>
+                <div class="card-details">
+                <div style="margin-left: 20px;"><span style="color: white;margin-right: 3px;">{{ ranking[i][4] }}</span><span style="color: #2e2e2e;">Prompts</span></div>
+                <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">{{ ranking[i][3]}}</span><span style="color: #2e2e2e;">Letters</span><div class="percentage"></div></div>
+                </div>
             </div>
-            <div class="card-details">
-            <div style="margin-left: 20px;"><span style="color: white;margin-right: 3px;">928</span><span style="color: #2e2e2e;">FILES</span></div>
-            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">1</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>+11.1%</p><img src="static/img/trend-up.png" class="indicator" ></div></div>
-            </div>
-        </div>
-
-        <div class="card card2">
-            <div class="user-profile">
-                <img src="static/img/user-pfp1.png" class="user-pfp">
-                <h1 style="color: white;">User2</h1>
-            </div>
-            <div class="card-details">
-            <div style="margin-left: 20px;"><span style="color: white;margin-right: 3px;">623</span><span style="color: #2e2e2e;">FILES</span></div>
-            <div style="margin-left: 20px;display: flex;align-items: center;"><span style="color: white;margin-right: 3px;">3</span><span style="color: #2e2e2e;">GB</span><div class="percentage"><p>-3%</p><img src="static/img/trend-down.png" class="indicator" ></div></div>
-            </div>
-        </div>
+        {% endfor %}
+    
     </div> 
     <div class="Center-elements-wrapper">
         <div class="nav-wrapper">
@@ -113,13 +116,19 @@
      <nav>
         <div class="pfp"><img src="static/img/logo.png" class="pfp1"></div>
         <p>Echo</p>
+        <form action="{{ url_for('clear_discussion') }}" method="POST">
+            {{ forms['clear_discussion'].hidden_tag() }}
+            <button class="clean-icon" type="submit"><img src="static/img/clear.png" class="clean-icon-img"></button>
+        </form>
     </nav>
-     <div class="Chat"></div>
+    <div class="Chat" id="chat">
+      <!-- Show Conversation -->
+     </div>
 
     <div class="Chat-input">
         <div class="messageBox">
-        <input required="" placeholder="Message..." type="text" id="messageInput" />
-        <button id="sendButton">
+        <input required="" placeholder="Message..." type="text" id="messageInput" maxlength="300" />
+        <button id="sendButton" onclick="sendMessage()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
             <path
               fill="none"
@@ -136,9 +145,16 @@
         </button>
       </div>
       </div>
-      <div class="mic-button"><img src="static/img/microphone.png" class="mic-icon"></div>
+    <div class="mic-button">
+        <img src="static/img/microphone.png" class="mic-icon" id="mic-icon">
+    </div>
    </div>
-   <div class="Main-Text"><p class="Page2-text">Try it yourself</p></div>
+   <div class="Main-Text"><p class="Page2-text">Try it yourself</p>
+    {% if not current_user.is_authenticated %}    
+        <p style="color:red;">&nbsp;&nbsp;&nbsp; Login Required</p>
+    {% endif %}
+    </div>
+   {{ raw_conversation_history }}
 </section>
 <section id="Page3">
    <div class="Feedback-text"><p class="Page3-text">Your Opinion is important</p></div>
@@ -154,6 +170,147 @@
     {{ forms['feedback_form'].submit(class='button') }}
     </form>
    </div>
-
 </section>
+<!-- Socket.IO API -->
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+<script>
+    // Connect to the Socket.IO server
+    const socket = io("http://localhost:5000"); // Change to your server URL if different
+
+    let aiResponse = ""; // Buffer to hold the AI's response as it comes in
+    let aiIsResponding = false; // Flag to track if AI is responding
+
+    // Handle the connection event
+    socket.on("connect", function() {
+        console.log("Connected to the server. Socket ID:", socket.id);
+    });
+
+    // Handle the disconnect event
+    socket.on("disconnect", function(reason) {
+        console.log("Disconnected from the server. Reason:", reason);
+
+        // Perform any cleanup tasks if required
+        aiResponse = ""; // Clear the AI response buffer
+    });
+    
+    // Listen for the "conversation_history" event
+    socket.on('conversation_history', function(conversationHistory) {
+        // Loop through the conversation history and display each message
+        conversationHistory.forEach(function(entry) {
+            // Create message elements for user and assistant
+            displayMessage(`You: ${entry.user_message}`, "user-message");
+            displayMessage(`AI: ${entry.ai_response}`, "ai-message");
+        });
+    });
+
+    // Handle receiving messages from the server (word by word, building into a single response)
+    socket.on("receive_message", function(data) {
+        aiResponse += data + " "; // Append the incoming word to the response
+        updateAIMessage(aiResponse.trim());
+    });
+
+    // Function to send a message to the server
+    function sendMessage(message) {
+        if (message.trim() !== "") {
+            // Add user message to the chat window
+            displayMessage(`You: ${message}`, "user-message");
+
+            // Emit the message to the server
+            socket.emit("send_message", message);
+
+            // Reset the AI response buffer for a new question
+            aiResponse = ""; 
+
+            // Add a placeholder for the AI's response
+            displayMessage("AI: ", "ai-message", true); // `true` means it's a placeholder.
+        }
+    }
+
+    // Function to display a message in the chat window
+    function displayMessage(message, cssClass, isPlaceholder = false) {
+        const chat = document.getElementById("chat");
+
+        // Create a new div element for the message
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", cssClass);
+        messageDiv.textContent = message;
+
+        // Add a placeholder to the AI message if required
+        if (isPlaceholder) {
+            messageDiv.classList.add("loading"); // A loading effect can be added to the placeholder.
+        }
+
+        // Append the message to the chat div
+        chat.appendChild(messageDiv);
+
+        // Scroll to the bottom of the chat
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    // Function to update the AI message in the chat dynamically
+    function updateAIMessage(message) {
+        // Find the last AI message block
+        let aiMessageDiv = document.querySelector(".ai-message:last-child");
+
+        if (!aiMessageDiv) {
+            // If the AI message div doesn't exist, create it
+            const chat = document.getElementById("chat");
+            aiMessageDiv = document.createElement("div");
+            aiMessageDiv.classList.add("message", "ai-message");
+            chat.appendChild(aiMessageDiv);
+        }
+
+        // Update the AI message content
+        aiMessageDiv.textContent = `AI: ${message}`;
+    }
+
+    // Add an event listener for the Enter key to submit the message
+    document.getElementById("messageInput").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent the default behavior (form submission or new line in input)
+            sendMessage(event.target.value); // Call the function to send the message
+            event.target.value = "";
+        }
+    });
+    
+    // Button click to submit the message
+    document.getElementById("sendButton").addEventListener("click", function() {
+        var message = document.getElementById("messageInput").value;
+        sendMessage(message);  // Call the function to send the message
+        document.getElementById("messageInput").value = "";  // Clear the input field
+    });
+
+    // Add the speech recognition feature
+    const micButton = document.getElementById('mic-icon');
+    let isRecording = false;
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+    recognition.lang = "en-US";
+    recognition.continuous = false; // Stop recognition after the user stops speaking
+    recognition.interimResults = false; // Only final results, not interim
+
+    recognition.onstart = function() {
+        micButton.src = 'static/img/record.gif'; // Change to recording image
+        isRecording = true;
+    };
+
+    recognition.onend = function() {
+        micButton.src = 'static/img/microphone.png'; // Set back to microphone image
+        isRecording = false;
+    };
+
+    recognition.onresult = function(event) {
+        const message = event.results[0][0].transcript; // Get the transcribed message
+        sendMessage(message); // Send the message directly
+    };
+
+    micButton.addEventListener('click', () => {
+        if (isRecording) {
+            recognition.stop(); // Stop recording if already recording
+        } else {
+            recognition.start(); // Start speech recognition
+        }
+    });
+</script>
+
 {% endblock %}

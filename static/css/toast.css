@@ -1,4 +1,3 @@
-/* General Toast Styling */
 .toast {
     position: fixed;
     top: 20px;
@@ -14,33 +13,30 @@
     justify-content: space-between;
     min-width: 250px;
     box-sizing: border-box;
-    transition: all 0.6s ease-out;
+    transition: all 0.3s ease-out;
     opacity: 0;
     visibility: hidden;
     z-index: 9999;
 }
 
 .toast.show {
-    background-color: #926fa9; /* Glowing green */
+    background-color: #926fa9; 
     opacity: 1;
     visibility: visible;
 }
 
-/* Success Toast */
 .toast.success {
-    background-color: #28a745; /* Glowing green for success */
+    background-color: #28a745; 
     box-shadow: 0 4px 15px rgba(40, 167, 69, 0.7);
-    animation: toastIn 0.3s ease-in-out, toastOut 0.3s ease-in-out 1s forwards;
+    animation: toastIn 0.1s ease-in-out, toastOut 0.1s ease-in-out .1s forwards;
 }
 
-/* Error Toast */
 .toast.error {
-    background-color: #e74c3c; /* Blood red for error */
+    background-color: #e74c3c; 
     box-shadow: 0 4px 15px rgba(231, 76, 60, 0.7);
-    animation: toastIn 0.3s ease-in-out, toastOut 0.3s ease-in-out 1s forwards;
+    animation: toastIn 0.1s ease-in-out, toastOut 0.1s ease-in-out .1s forwards;
 }
 
-/* Icon and Text Alignment */
 .toast i {
     margin-right: 10px;
     font-size: 20px;

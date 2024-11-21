@@ -1,0 +1,34 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title%}Pfps{% endblock %}
+{% block body %}
+<div class="main-content">
+    <h1>Users Profile Pictures(PNG)</h1>
+    <a href="{{ url_for('pfps.create') }}" class="btn btn-success mb-3">Create</a><br><br>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>preview</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for user_id in user_ids %}
+                <tr>
+                    <td>{{ user_id.split('.')[0] }}</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="{{ url_for('pfps.preview',user_id=user_id)}}">See</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger btn-sm" href="{{ url_for('pfps.delete',user_id=user_id)}}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}
