@@ -41,21 +41,24 @@
             <form id="profileForm" method="POST" action="{{ url_for('profile') }}">
               {{ form.hidden_tag() }}  
               
-              <label for="name">New {{ form.name.label.text|title }}</label>
+              <label>New {{ form.name.label.text|title }}</label>
               <!--<input type="text" id="name" name="name" placeholder="Enter your name">-->
               {{ form.name(placeholder="Enter New Name") }}
+              
               {% if not (user_data['is_super_admin'] or user_data['is_admin']) %}
-                <label for="name">New {{ form.picture.label.text|underscore_separate|title }}</label>
+                <label >New {{ form.picture.label.text|underscore_separate|title }}</label>
               {{ form.picture(placeholder="Enter New Picture") }}
               {% endif %}
-              <label for="email">{{ form.new_password.label.text|title }}</label>
-              <!--<input type="password" id="email" name="email" placeholder="Enter your Password">-->
-              {{ form.new_password(placeholder="Enter New Password")}}
+              
+              {% if not user_data['is_oauth'] %}
+                <label>{{ form.new_password.label.text|title }}</label>
+                <!--<input type="password" id="email" name="email" placeholder="Enter your Password">-->
+                {{ form.new_password(placeholder="Enter New Password")}}
 
-              <label for="email">{{ form.password.label.text|title }}</label>
-              <!--<input type="password" id="email" name="email" placeholder="Enter your Password">-->
-              {{ form.password(placeholder="Enter your Password")}}
-
+                <label>{{ form.password.label.text|title }}</label>
+                <!--<input type="password" id="email" name="email" placeholder="Enter your Password">-->
+                {{ form.password(placeholder="Enter your Password")}}
+              {% endif %}
               <div id="message"></div> <!-- This is where success/error messages will appear -->
               <br>
               <button type="submit">Save Changes</button>

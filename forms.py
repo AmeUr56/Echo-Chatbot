@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField,FileAllowed
 from wtforms import StringField,EmailField,PasswordField,SubmitField,HiddenField,BooleanField,IntegerField,DateField
-from wtforms.validators import Length,DataRequired,EqualTo,Optional,ValidationError
+from wtforms.validators import Length,DataRequired,EqualTo,Optional,ValidationError,Regexp
 
 import time
 
@@ -56,8 +56,18 @@ class UpdateProfileForm(FlaskForm):
     name = StringField(label='name',validators=[Optional(),Length(min=5,max=10,message="Name Length must be between 5 and 10")])
     picture = FileField(label='profile_picture',validators=[Optional(),FileAllowed(['png','jpg','jpeg','gif'],message='Only PNG,JPG,JPEG,GIF supported')])
     new_password = PasswordField(label='new Password',validators=[Optional(),Length(8,30,message="New Password Length must be between 8 and 30")])
-    password = PasswordField(label='password', validators=[DataRequired(message="Password is required")])
+    password = PasswordField(label='password', validators=[])
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.oauth_user = kwargs.get('oauth_user', False)
+
+    def validate_password(self, field):
+        if self.oauth_user:
+            return 
+        if not field.data:
+            raise ValidationError("Password is required")
+        
 class ClearDiscussion(FlaskForm):
     pass
 

@@ -28,6 +28,7 @@ For Dynamic Templates(HTML) jinja2 template engine language is used for:
 - bcrypt
 - caching
 - limiter
+- oauthlib
 
 #### Visualizations:
 Data Science libraries like **Pandas**, **matplotlib**, **seaborn** and **PIL**. 
@@ -129,9 +130,53 @@ Data Science libraries like **Pandas**, **matplotlib**, **seaborn** and **PIL**.
 - **Flask-migrate** is used for creating db and handling its schema.
 - **Flask-sqlalchemy** as an **ORM** for CRUD operations form the db.
 
-#### ER Diagram
-<img src="erd.png" />
+#### Entity-Relationship Diagram
+<img src="erd.png"/>
 
+#### Database Markup Language
+```
+Table User {
+  id integer [primary key]
+  google_id integer [unique,null]
+  name string(30) [not null]
+  email string [unique, not null]
+  password string [null]
+  picture boolean [default:False]
+  ip_address string [not null]
+  created_at datetime [not null]
+  updated_at datetime [null]
+}
+
+Table Role {
+  id integer [primary key]
+  user_id integer [ref: >User.id]
+  is_super_admin boolean [default:False]
+  is_admin boolean [default:False]
+}
+
+Table Stats {
+  id integer [primary key]
+  user_id integer [ref: >User.id]
+  length integer [default:0]
+  prompts integer [default:0]
+  last_at datetime [null]
+}
+
+Table Discussion {
+  id integer [primary key]
+  user_id integer [ref: >User.id]
+  prompt string(500) [not null]
+  response string [not null]
+  index integer [not null]
+}
+
+Table Feedback {
+  id integer [primary key]
+  user_id integer [ref: > User.id]
+  opinion string(100) [not null]
+  send_at datetime
+}
+```
 #### See Models.py for more details
 
 ### Authentification
@@ -139,6 +184,9 @@ Data Science libraries like **Pandas**, **matplotlib**, **seaborn** and **PIL**.
 Nothing Special just standard things.
 
 #### Google OAuth
+First i get the **ClientID** and **Client Secret Key** from google cloud console and then using **flask-oauthlib** and **Authlib** i setup this oauth using two endpoint:
+- **login_google**: redirect to the url set up for google oauth
+- **authorize_google**: provded by google after set it up in the thier cloud console which does the process and then redirects back to the webapp.
 
 ### SLM
 Qwen2.5-1.5B-Instruct by Qwen

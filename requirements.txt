@@ -8,8 +8,9 @@ flask-admin
 flask-limiter
 flask-caching
 flask-socketio
+flask-oauthlib
 wtforms
-
+Authlib
 python-dotenv
 gunicorn
 email-validator

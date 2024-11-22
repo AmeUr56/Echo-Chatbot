@@ -9,14 +9,17 @@ import re
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import HTTPException
 import time
+import requests
+from io import BytesIO
 
 from forms import SignupForm,LoginForm,LogoutForm,FeedbackForm,UpdateProfileForm,ClearDiscussion
 from models import User,Feedback,Role,Discussion,Stats
 from chat import echo_response,activate_echo#,query
 from script import create_conversation_history
 
-def register_routes(app,db,bcrypt,limiter,cache,socketio):
-
+def register_routes(app,db,bcrypt,limiter,cache,socketio,google):
+    
+    #-----------------------------------------Restful API----------------------------------------#
     @app.route('/')
     @limiter.limit("5 per second")
     def index():
@@ -27,7 +30,7 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
             FROM Stats as s
             INNER JOIN User as u
                 ON s.user_id = u.id
-            ORDER BY s.length,s.prompts DESC
+            ORDER BY s.length DESC,s.prompts DESC
             LIMIT 2;
         """)
         
@@ -58,7 +61,6 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
                 password = form.password.data
                 confirm_password = form.confirm_password.data
 
-
                 # Check if email already exists 
                 if User.query.filter_by(email=email).first():
                     return jsonify({"status":"error","message":"Email already exists"})
@@ -88,16 +90,6 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
         current_time = time.time() 
         return render_template('Signup.html',form=form,form_endpoint='signup',current_time=current_time)
     
-    def is_email(email):
-        # Regular expression for validating an Email
-        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-        
-        # Return True if the email matches the regex
-        if re.match(email_regex, email):
-            return True
-        else:
-            return False
-        
     @app.route('/login',methods=['GET','POST'])
     @limiter.limit("5 per second")
     def login():
@@ -112,11 +104,18 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
                 credentials = form.credentials.data.lower().strip()
                 password = form.password.data
                 
-                if is_email(credentials):
-                    user = User.query.filter_by(email=credentials).first()
-                else:
-                    user = User.query.filter_by(name=credentials).first()
-                    
+                user_name = User.query.filter_by(name=credentials).first()
+                user_email = User.query.filter_by(email=credentials).first()
+                if user_email:
+                    if user_email.google_id:
+                        return jsonify({"status":"error","message":"Login with Google Account"})
+                    user = user_email
+                
+                if user_name:
+                    if user_name.google_id:
+                        return jsonify({"status":"error","message":"Login with Google Account"})
+                    user = user_name
+                
                 # Check if User exists
                 if user:
                     # Check if Password is correct
@@ -137,18 +136,72 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
         current_time = time.time() 
         return render_template('Login.html',form=form,form_endpoint='login',current_time=current_time)
 
+    @app.route('/login/google')
+    def login_google():
+        if current_user.is_authenticated:
+            flash("Already Logged in","error")
+            return redirect(url_for('index'))
+        
+        redirect_uri = url_for("authorize_google",_external=True)
+        return google.authorize_redirect(redirect_uri)
+    
+    @app.route("/authorize/google")
+    def authorize_google():
+        if current_user.is_authenticated:
+            flash("Already Logged in","error")
+            return redirect(url_for('index'))
+        
+        token = google.authorize_access_token()
+        userinfo_endpoint = google.server_metadata['userinfo_endpoint']
+        response = google.get(userinfo_endpoint)
+        user_info = response.json()
+        
+        google_id = user_info['sub']
+        user =  User.query.filter_by(google_id=google_id).first()
+        if user:
+            login_user(user)
+            flash("Logged in Succefully","success")
+            return redirect(url_for("index"))
+        
+        username = user_info['name'].lower().strip()
+        email = user_info['email'].lower().strip()
+        
+        user = User(google_id=google_id,name=username,email=email,ip_address=request.remote_addr,created_at=datetime.now(timezone.utc))
+        db.session.add(user)
+        db.session.commit()
+        
+        profile_pic_url = user_info['picture']
+        if profile_pic_url:
+            response = requests.get(profile_pic_url)
+            if response.status_code == 200:
+                    image_stream = BytesIO(response.content)
+                    picture_pil = Image.open(image_stream)
+                    picture_pil = picture_pil.resize((180,180))
+                    
+                    # Save Picture
+                    file_path = rf"static/pfps/{user.id}.png"
+                    picture_pil.save(file_path,"PNG")
+                    user.picture = True
+        
+        db.session.commit()
+        
+        login_user(user)
+        flash("Logged in Succefully","success")
+        return redirect(url_for("index"))
+        
     @app.route('/logout',methods=['POST'])
     @limiter.limit("3 per second")
     def logout():
         form = LogoutForm()
         if form.validate_on_submit() and current_user.is_authenticated:
             logout_user() 
+            session.clear()
             flash("Logged out Succefully","success")
             return redirect(url_for('index'))
         else:
             flash("Login Required","error")
             return redirect(url_for('login'))
-    
+
     @app.route('/feedback',methods=['POST'])
     @limiter.limit("1 per second")
     def feedback():
@@ -183,6 +236,7 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
             'picture_path': current_user.id if current_user.picture else False,
             'is_super_admin': current_user.is_super_admin,
             'is_admin': current_user.is_admin,
+            'is_oauth':current_user.google_id,
             'stats':stats
         }
         return user_data
@@ -193,24 +247,27 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
     def profile():
         user = User.query.filter_by(id=current_user.id).first()
         
-        form = UpdateProfileForm(obj=user)
+        oauth = True if current_user.google_id else False 
+        form = UpdateProfileForm(oauth_user=oauth)
         if request.method == 'POST':
             if form.validate_on_submit():
                 name = form.name.data.strip()
-                new_password = form.new_password.data
-                password = form.password.data
-                picture =  form.picture.data
+                picture =  form.picture.data    
+            
+                if not current_user.google_id:
+                    new_password = form.new_password.data
+                    password = form.password.data
 
-                if not bcrypt.check_password_hash(user.password,password):
-                    return jsonify({"status":"error","message":"Password incorrect"})
+                    if not bcrypt.check_password_hash(user.password,password):
+                        return jsonify({"status":"error","message":"Password incorrect"})
+
+                    if new_password:
+                        user.password = bcrypt.generate_password_hash(new_password)
+                        is_updated = 1
                 
                 is_updated = 0
                 if name:
                     user.name = name
-                    is_updated = 1
-
-                if new_password:
-                    user.password = bcrypt.generate_password_hash(new_password)
                     is_updated = 1
 
                 if picture:
@@ -259,7 +316,8 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
         
             flash("Discussion Succefuly Cleared",'success')
             return redirect(url_for('index'))
-        
+    #--------------------------------------------------------------------------------------#
+    #---------------------------------------SocketIO API-----------------------------------#
     user_conversations = {}
     @socketio.on('connect')
     @login_required
@@ -370,10 +428,11 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
         if user_id in user_conversations.keys():
             del user_conversations[user_id]
         
-        #for elem in ['discussion_index','discussion_length','last_at']:
-        #    session.pop(elem,None)
-        
+        for elem in ['discussion_index','discussion_length','last_at']:
+            session.pop(elem,None)
+    #--------------------------------------------------------------------------------------#
     
+    #------------------------------------------Addons--------------------------------------#
     @app.errorhandler(HTTPException)
     def handle_error(error):
         return render_template('Error.html')
@@ -388,3 +447,5 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio):
     @app.template_filter("get_attr")
     def get_attr(entity,attr):
         return getattr(entity,attr,None)
+    #--------------------------------------------------------------------------------------#
+    

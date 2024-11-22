@@ -4,6 +4,7 @@ from app import db
 
 class User(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)
+    google_id = db.Column(db.Integer,unique=True,nullable=True)
     name = db.Column(db.String(10),nullable=False)
     email = db.Column(db.String,unique=True,nullable=False)
     password = db.Column(db.String(),nullable=True)

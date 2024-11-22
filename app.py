@@ -9,6 +9,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_caching import Cache
 from flask_socketio import SocketIO
+from authlib.integrations.flask_client import OAuth
 
 import os
 from dotenv import load_dotenv
@@ -22,6 +23,7 @@ login_manager = LoginManager()
 limiter = Limiter(key_func=get_remote_address)
 cache = Cache()
 socketio = SocketIO()
+oauth = OAuth()
 
 def create_app():
     app = Flask(__name__)
@@ -41,6 +43,7 @@ def create_app():
     limiter.init_app(app)
     cache.init_app(app)
     socketio.init_app(app)
+    oauth.init_app(app)
     #-----------------------Login Manager-----------------------#
     login_manager.init_app(app)
     
@@ -71,6 +74,10 @@ def create_app():
         def picture(self):
             return False
 
+        @property
+        def google_id(self):
+            return 0
+        
     # Set the custom AnonymousUser class
     login_manager.anonymous_user = AnonymousUser
     #---------------------------------------------------------#
@@ -93,12 +100,18 @@ def create_app():
     admin.add_view(FeaturesView(name='Features',endpoint="features"))
     #----------------------------------------------------------#
 
-    #-----------------------Google OAuth-----------------------#
-
-    #----------------------------------------------------------#
+    #-----------------------OAuth-----------------------#
+    google = oauth.register(
+        name='google',
+        client_id = app.config['GOOGLE_CLIENT_ID'],
+        client_secret = app.config['GOOGLE_CLIENT_SECRET'],
+        server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+        client_kwargs={'scope':'openid profile email'}
+    )
+    #----------------------------------------------------#
     
     # Link Endpoints to the app
     from routes import register_routes
-    register_routes(app,db,bcrypt,limiter,cache,socketio)
+    register_routes(app,db,bcrypt,limiter,cache,socketio,google)
     
     return app

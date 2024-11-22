@@ -81,7 +81,7 @@ class DashboardView(AdminIndexView):
         return redirect(url_for('index'))
     
 class UserModelView(ModelView):
-    column_list = ['id','is_admin','name','picture','email','password','ip_address','created_at','updated_at']
+    column_list = ['id','google_id','is_admin','name','picture','email','password','ip_address','created_at','updated_at']
     
     @expose('/')
     def index(self):
