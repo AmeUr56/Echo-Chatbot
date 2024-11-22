@@ -194,3 +194,10 @@ For any Questions or Collaborations contact us on:
 - <a href="https://x.com/ame44i?t=al4XV8KZEK6R9Y0zpxPS8g&s=09">X (Twitter)</a>
 
 ## Noufel
+-
+-
+-
+
+# License
+This web app is licensed under the [MIT License](./LICENSE.md).  
+Copyright (c) 2024 [Ameur & Noufel].

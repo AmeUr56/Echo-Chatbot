@@ -1,5 +1,5 @@
 flask
-flask-sqlachemy
+flask-sqlalchemy
 flask-migrate
 flask-bcrypt
 flask-wtf
@@ -18,5 +18,5 @@ matplotlib
 seaborn
 pandas
 sqlachemy
-PIL
-werkzueg
+pillow
+werkzeug
