@@ -103,7 +103,8 @@ def register_routes(app,db,bcrypt,limiter,cache,socketio,google):
             if form.validate_on_submit():
                 credentials = form.credentials.data.lower().strip()
                 password = form.password.data
-                
+
+                user = 0
                 user_name = User.query.filter_by(name=credentials).first()
                 user_email = User.query.filter_by(email=credentials).first()
                 if user_email:
