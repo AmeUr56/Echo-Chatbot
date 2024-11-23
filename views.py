@@ -316,7 +316,7 @@ class RoleModelView(ModelView):
                     return redirect(url_for('role.index'))
                 
     def is_accessible(self):
-        return current_user.is_admin
+        return current_user.is_super_admin
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('admin.index'))
@@ -414,6 +414,7 @@ class ProfilePicturesView(BaseView):
     @expose('/')
     def index(self):
         user_ids = os.listdir(self.dir_path)
+        user_ids = [user_id for user_id in user_ids if user_id.endswith("png")]
         return self.render('admin/pfps_admin.html',user_ids=user_ids)
     
     @expose('/create',methods=['GET','POST'])
