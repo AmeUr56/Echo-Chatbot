@@ -277,9 +277,7 @@ For any Questions or Collaborations contact us on:
 - <a href="https://x.com/ame44i?t=al4XV8KZEK6R9Y0zpxPS8g&s=09">X (Twitter)</a>
 
 ## Noufel
--
--
--
+- <a href="https://www.linkedin.com/in/nawfel-halilou-b8549430">Linkedin</a>
 
 # License
 This web app is licensed under the [MIT License](./LICENSE.md).  
