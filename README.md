@@ -11,30 +11,34 @@ HTML
 The structure of the website is built using HTML (HyperText Markup Language). It defines the layout, content, and elements of the website, such as headers, paragraphs, forms, and buttons.
 CSS
 
-###CSS (Cascading Style Sheets) is used to style the website. It controls the layout, colors, typography, and visual aspects of the web pages. Custom styles were applied for various components to ensure a unique and appealing design.
+#### CSS (Cascading Style Sheets)
+is used to style the website. It controls the layout, colors, typography, and visual aspects of the web pages. Custom styles were applied for various components to ensure a unique and appealing design.
 JavaScript
 
-###JavaScript is used to add interactivity to the website. It is responsible for handling user events, such as clicks, form submissions, and dynamic content updates, making the site interactive and engaging.
+#### JavaScript
+is used to add interactivity to the website. It is responsible for handling user events, such as clicks, form submissions, and dynamic content updates, making the site interactive and engaging.
 Bootstrap
 
-###The Bootstrap library is used for rapid development. It provides pre-built components such as buttons, modals, navigation bars, and grid systems. Bootstrap ensures a clean and responsive design across different screen sizes and devices.
+#### The Bootstrap library
+is used for rapid development. It provides pre-built components such as buttons, modals, navigation bars, and grid systems. Bootstrap ensures a clean and responsive design across different screen sizes and devices.
 Responsive grid layout: The grid system provided by Bootstrap is used to make the website fully responsive, ensuring it adapts well to various screen sizes, from desktop to mobile.
 Customizable themes: Bootstrap allows for customization of themes, color schemes, and fonts to align with the branding.
 Uiverse IO
 
-###Uiverse IO is used to import styled widgets that enhance the functionality and aesthetic of the website. It provides pre-designed and customizable UI elements, such as buttons, icons, and cards, making it easy to integrate visually appealing components with minimal effort.
+### Uiverse IO
+is used to import styled widgets that enhance the functionality and aesthetic of the website. It provides pre-designed and customizable UI elements, such as buttons, icons, and cards, making it easy to integrate visually appealing components with minimal effort.
 Widgets from Uiverse IO are imported and used across the website to maintain a consistent and modern design style.
-##Key Features:
+## Key Features:
 Fully Responsive Design
 The website is designed to work seamlessly across all devices and screen sizes, thanks to the responsive layout provided by Bootstrap and custom CSS media queries. Whether viewed on a mobile phone, tablet, or desktop, the website adjusts dynamically to provide the best user experience.
 
-##Styled Widgets
+## Styled Widgets
 Pre-styled widgets from Uiverse IO are utilized across the website for elements like buttons, cards, and icons, giving a professional and modern look without the need for complex custom designs.
 
-##Interactive Elements
+#### Interactive Elements
 JavaScript is used to handle user interactions such as form validation, dynamic content loading, and interactive navigation. These features enhance the overall user experience by providing a responsive and engaging interface.
 
-Conclusion:
+#### Conclusion:
 This front-end setup provides a robust, responsive, and visually appealing website, utilizing the power of HTML, CSS, JavaScript, Bootstrap, and Uiverse IO. The website is fully responsive, ensuring a great user experience across all devices.
 # Backend
 Python and its libraries are used for the backend section,here is summary:
